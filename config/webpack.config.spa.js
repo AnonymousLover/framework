@@ -77,7 +77,7 @@ module.exports = opts => {
 				}
 			}),
 			// 分离框架级别 css 文件
-			new _extract("[name]/[name].[chunkHash:6].css", { allChunks: true }),
+			new _extract(`[name]/[name].[chunkHash:6].css`, { allChunks: true }),
 			new _clean([`${deployPath}/*`], { root: __dirname, dry: false })
 		].concat([])
 	})
