@@ -1,0 +1,33 @@
+{
+  "name": "webpack-1",
+  "version": "1.0.0",
+  "description": "学习webpack的旅程",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nimin",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^7.1.6",
+    "axios": "^0.17.0",
+    "babel-cli": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "clean-webpack-plugin": "^0.1.17",
+    "css-loader": "^0.28.7",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.11.1",
+    "html-webpack-plugin": "^1.7.0",
+    "minimist": "^1.2.0",
+    "postcss-loader": "^2.0.8",
+    "postcss-pxtorem": "^4.0.1",
+    "style-loader": "^0.19.0",
+    "url-loader": "^0.6.2",
+    "webpack": "^1.15.0",
+    "webpack-merge": "^4.1.0"
+  }
+}
