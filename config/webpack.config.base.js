@@ -1,11 +1,27 @@
 const webpack   = require('webpack');
+//postcss
 const px2rem    = require('postcss-pxtorem');
 const autofixer = require('autoprefixer')
 
 //webpack的基础配置
 const globalConfig = require('./metadata.webpack.config');
 
-module.exports = opts => {
+module.exports.postcss = {
+	loader : 'postcss-loader',
+	options: {
+		plugins: () => [
+			autofixer(),
+			px2rem({
+				rootValue        : 100,
+				propList         : ['*'],
+				selectorBlackList: [/^html$/],
+				minPixelValue    : 2,
+			})
+		]
+	}
+}
+
+module.exports.assign = opts => {
 
 	const appName = opts['appName'];
 	//是否是产线环境
@@ -19,19 +35,11 @@ module.exports = opts => {
 			chunkFilename: `${appName}/[name].[chunkHash:6].js`
 		},
 		// source map
-		// devtool: config.devtool,
+		devtool: config.devtool,
 		plugins: [
 			new webpack.optimize.DedupePlugin(),
 			//压缩 JS
-			// new webpack.optimize.UglifyJsPlugin({ sourceMap: !!config.sourceMap }),
-		],
-		postcss: () => [
-			px2rem({
-				rootValue        : 100,
-				propList         : ['*'],
-				selectorBlackList: [/^html$/],
-				minPixelValue    : 2,
-			})
+			new webpack.optimize.UglifyJsPlugin({ sourceMap: !!config.sourceMap }),
 		]
 	}
 }

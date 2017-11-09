@@ -3,15 +3,16 @@
  */
 // 动态生成 spa webpack 配置数据
 
-const path         = require('path')
-const webpack      = require('webpack')
-const merge        = require('webpack-merge')
-const _html        = require('html-webpack-plugin')
-const _clean       = require('clean-webpack-plugin')
-const _extract     = require('extract-text-webpack-plugin')
+const path     = require('path')
+const webpack  = require('webpack')
+const merge    = require('webpack-merge')
+const _html    = require('html-webpack-plugin')
+const _clean   = require('clean-webpack-plugin')
+const _extract = require('extract-text-webpack-plugin')
+
 //本地配置
-const base         = require('./webpack.config.base')
-const globalConfig = require('./metadata.webpack.config')
+const { assign, postcss } = require('./webpack.config.base')
+const globalConfig        = require('./metadata.webpack.config')
 
 module.exports = opts => {
 	const appName     = opts['appName'];
@@ -24,9 +25,8 @@ module.exports = opts => {
 	const appType     = 'singlePageWeb';
 	const deployPath  = path.join(config.deployPath, appType);
 	//webpack配置相关
-	const baseConfig  = base(opts);
 
-	return merge(baseConfig, {
+	return merge(assign(opts), {
 		// 定义应用入口
 		entry  : {
 			[appName]: path.join(srcPath, 'index.js'),                  // 应用级
@@ -37,19 +37,22 @@ module.exports = opts => {
 		output : { path: deployPath },
 		// 模块加载器规则
 		module : {
-			loaders: [{
-				test  : /\.(css|less)$/,
-				loader: _extract.extract('style', 'css!postcss')
+			rules: [{
+				test: /\.(css|less)$/,
+				use : _extract.extract({
+					fallback: 'style-loader',
+					use     : ['css-loader', postcss]
+				})
 			}, {
 				test   : /\.(js|jsx)$/,
-				loader : 'babel-loader',
+				use    : ['babel-loader'],
 				exclude: /node_modules/
 			}, {
-				test  : /\.(jpg|png|gif)$/,
-				loader: `url?limit=5000&name=images/[name].[ext]`
+				test: /\.(jpg|png|gif)$/,
+				use : [`url?limit=5000&name=images/[name].[ext]`]
 			}, {
-				test  : /\.(svg|ttf|woff|eot)$/,
-				loader: `url?limit=5000&name=fonts/[name].[ext]`
+				test: /\.(svg|ttf|woff|eot)$/,
+				use : [`url?limit=5000&name=fonts/[name].[ext]`]
 			}]
 		},
 		// 插件
