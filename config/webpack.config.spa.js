@@ -40,8 +40,9 @@ module.exports = opts => {
 			rules: [{
 				test: /\.(css|less)$/,
 				use : _extract.extract({
-					fallback: 'style-loader',
-					use     : ['css-loader', postcss]
+					fallback  : 'style-loader',
+					use       : ['css-loader', 'less-loader', postcss],
+					publicPath: '../'
 				})
 			}, {
 				test   : /\.(js|jsx)$/,
@@ -49,10 +50,10 @@ module.exports = opts => {
 				exclude: /node_modules/
 			}, {
 				test: /\.(jpg|png|gif)$/,
-				use : [`url?limit=5000&name=images/[name].[ext]`]
+				use : [`url-loader?limit=5000&name=images/[name].[ext]`]
 			}, {
 				test: /\.(svg|ttf|woff|eot)$/,
-				use : [`url?limit=5000&name=fonts/[name].[ext]`]
+				use : [`url-loader?limit=5000&name=fonts/[name].[ext]`]
 			}]
 		},
 		// 插件
