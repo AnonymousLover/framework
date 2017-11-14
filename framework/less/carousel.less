@@ -1,0 +1,68 @@
+
+.carousel-wrapper {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  width: 100%;
+  
+  .carousel-body {
+    position: relative;
+    transition: all 0s linear;
+    white-space: nowrap;
+    
+    .carousel-item {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      vertical-align: top;
+      white-space: nowrap;
+      cursor: pointer;
+      
+      &.m-row {
+        padding: 25px 0 44px;
+        
+        [class^=col-] {
+          img {
+            width: 50%;
+            margin: 14px auto 8px;
+          }
+        }
+      }
+      span {
+        display: block;
+        font-size: 24px;
+      }
+      img {
+        margin: 0 auto;
+        display: block;
+      }
+      &:not(.m-row) img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+  .carousel-indicator {
+    position: absolute;
+    bottom: 16px;
+    width: 100%;
+    text-align: center;
+    background: transparent;
+    z-index: 2;
+    
+    .indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin: 2px 8px;
+      border-radius: 2px;
+      background: #333;
+      
+      &.active {
+        background: #49a6ff;
+        width: 16px;
+      }
+    }
+  }
+}

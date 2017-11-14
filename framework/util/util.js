@@ -162,7 +162,8 @@ export function copy(source, dest, stackSource, stackDest) {
     if (isObject(source)) {
       if (-1 !== (i = stackSource.indexOf(source)))
         return stackDest[i];
-      stackSource.push(source), stackDest.push(dest);
+      stackSource.push(source);
+      stackDest.push(dest);
     }
     if (isArray(source)) {
       dest.length = 0;
@@ -242,4 +243,83 @@ export function buildUrl(url, params) {
   let parts = toQueryString(params);
   if (parts.length > 0) url += (url.indexOf('?') === -1 ? '?' : '&') + parts;
   return url;
+}
+
+/*
+ * element area
+ */
+
+let body = isBrowser ? document.body : { appendChild: noop, removeChild: noop };
+
+export function createElement(tagName, attrMap) {
+  if (!isBrowser) return {};
+  let element = document.createElement(tagName);
+  forEach(attrMap, function (val, key) { element[key] = val });
+  return element;
+}
+
+export function toggleClass(el, clazz, isAdd) {
+  isBrowser && el instanceof Element && (function (clazz) {
+    let odClazz = (el.className || '').split(/\s+/).filter((item) => item);
+    forEach(clazz, function (val) {
+      let index = odClazz.indexOf(val);
+      isAdd ? index === -1 && odClazz.push(val) :
+        index !== -1 && odClazz.splice(index, 1);
+    });
+    el.className = odClazz.join(' ');
+  })(isArray(clazz) ? clazz : clazz.split(' '));
+}
+
+export const $body = {
+  addClass   : function () {
+    toggleClass(body, sliceArgs(arguments).join(' '), true);
+    return this;
+  },
+  removeClass: function () {
+    toggleClass(body, sliceArgs(arguments).join(' '));
+    return this;
+  },
+  enableClass: function (shouldEnableClass) {
+    return this[shouldEnableClass ? 'addClass' : 'removeClass']
+      .apply(this, sliceArgs(arguments, 1));
+  },
+  append     : function (ele) {
+    body.appendChild(ele.length ? ele[0] : ele);
+    return this;
+  },
+  remove     : function (ele) {
+    body.removeChild(ele.length ? ele[0] : ele);
+    return this;
+  },
+  locked     : function (remove) {
+    return this.enableClass(!remove, 'drop-open')
+  },
+  _body      : body
+}
+
+//vue-router
+
+let timer = null;
+
+export function routeConfig(router) {
+  if (!isBrowser) return;
+  router.beforeEach((to, from, next) => {
+    if (from.matched.length) {
+      $body.removeClass('transition');
+      timer = setTimeout(function () {
+        $body.addClass('transition'), timer = null;
+      }, 300);
+    }
+    next();
+  });
+  router.afterEach((to, from) => {
+    if (timer) clearTimeout(timer);
+    else {
+      $body.addClass('on');
+      setTimeout(function () {
+        $body.removeClass('on transition')
+      }, 400);
+    }
+  });
+  return router;
 }
