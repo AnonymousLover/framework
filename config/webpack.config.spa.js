@@ -46,14 +46,9 @@ module.exports = opts => {
     },
     // 插件
     plugins: [
-      // 公用模块提取
-      new webpack.optimize.CommonsChunkPlugin({
-        // "manifest" 为提取运行期代码，确保公用文件缓存
-        name: ["common", "manifest"]
-      }),
       // 分离框架级别 css 文件
       new _extract(`[name]/[name].[chunkHash:6].css`, { allChunks: true }),
-    ].concat([])
+    ]
   })
 }
 

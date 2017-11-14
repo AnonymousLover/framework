@@ -35,11 +35,11 @@ module.exports.assign = opts => {
 			chunkFilename: `${appName}/[name].[chunkHash:6].js`
 		},
 		// source map
-		devtool: config.devtool,
+		// devtool: config.devtool,
 		plugins: [
 			new webpack.optimize.DedupePlugin(),
 			//压缩 JS
-			new webpack.optimize.UglifyJsPlugin({ sourceMap: !!config.sourceMap }),
+			// new webpack.optimize.UglifyJsPlugin({ sourceMap: !!config.sourceMap }),
 		]
 	}
 }

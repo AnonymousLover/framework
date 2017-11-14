@@ -20,22 +20,29 @@ module.exports = opts => {
   //定义路径
   const rootPath   = path.resolve(__dirname, '../');
   const srcPath    = path.join(rootPath, `${appName}/`);
-  const appType    = '_vue';
-  const deployPath = path.join(config.deployPath, appType);
+  const deployPath = path.join(config.deployPath, '');
   //webpack配置相关
 
   return merge(spa(opts), {
     // 定义应用入口
     entry  : {
       [appName]: path.join(srcPath, 'index.js'),                  // 应用级
-      common   : path.join(rootPath, 'framework/_vue/common.js'),      // 框架级 JS 和 CSS
+      'common' : path.join(rootPath, 'framework/_vue/common.js'),      // 框架级 JS 和 CSS
     },
     // 定义输出
-    output : { path: deployPath },
+    output : {
+      path      : deployPath,
+      publicPath: 'deployed/'
+    },
     // 插件
     plugins: [
       // 环境定义
       new webpack.DefinePlugin({ 'process.env': config.env }),
+      // 公用模块提取
+      new webpack.optimize.CommonsChunkPlugin({
+        // "manifest" 为提取运行期代码，确保公用文件缓存
+        name: ["common", "manifest"]
+      }),
       // 入口页面自动生成
       new _html({
         template      : path.join(rootPath, 'template.html'),
@@ -48,7 +55,7 @@ module.exports = opts => {
           return order1 - order2;
         }
       }),
-      new _clean([`${deployPath}/*`], { root: __dirname, dry: false })
+      new _clean([`${deployPath}/*`], { root: rootPath, dry: false })
     ].concat([])
   })
 }
