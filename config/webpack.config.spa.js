@@ -31,6 +31,7 @@ module.exports = opts => {
 		entry  : {
 			[appName]: path.join(srcPath, 'index.js'),                  // 应用级
 			common   : path.join(rootPath, 'framework/common.js'),      // 框架级 JS 和 CSS
+			plugin   : path.join(rootPath, 'framework/plugin.js'),      // 插件级 JS
 			adaptive : path.join(rootPath, 'framework/adaptive.js')
 		},
 		// 定义输出
