@@ -55,7 +55,7 @@ module.exports = opts => {
           return order1 - order2;
         }
       }),
-      new _clean([`${deployPath}/*`], { root: rootPath, dry: false })
+      new _clean([`${deployPath}/`], { root: rootPath, dry: false })
     ].concat([])
   })
 }
