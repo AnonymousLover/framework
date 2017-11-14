@@ -1,0 +1,6 @@
+node_modules
+/www
+/_dist
+/_package
+/mock
+/deployed
