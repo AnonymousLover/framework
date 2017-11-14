@@ -2,6 +2,7 @@
  * Created by h5 on 2017/8/11.
  */
 import '../../../less/carousel.less'
+
 export default {
   data() {
     this.maxX = this.scrollX = this.itemWidth = ~~(this._timeout = false);

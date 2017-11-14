@@ -37,7 +37,6 @@ module.exports.assign = opts => {
     // source map
     devtool: config.devtool,
     plugins: [
-      new webpack.optimize.DedupePlugin(),
       //压缩 JS
       new webpack.optimize.UglifyJsPlugin({ sourceMap: !!config.sourceMap }),
     ]

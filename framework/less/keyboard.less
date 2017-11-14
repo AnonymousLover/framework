@@ -1,0 +1,157 @@
+//require layout.less
+.key-body {
+  position: absolute !important;
+  bottom: -2PX !important;
+  width: 100%;
+  background: #fff;
+  
+  > h5 {
+    font-weight: normal;
+    font-size: 24px;
+    text-align: center;
+    line-height: 2.6;
+    position: relative;
+    border-bottom: 1px solid #ccc;
+    
+    > i {
+      background: url(../images/safe-icon.png) no-repeat bottom/75%;
+      position: relative;
+      top: 6px;
+      margin-right: 6px;
+      display: inline-block;
+      height: 42px;
+      width: 36px;
+    }
+  }
+  ul.col li {
+    height: 44px;
+    line-height: 44px;
+    font-size: 44px;
+    box-sizing: content-box;
+    // 关闭键盘
+    &.key-hide {
+      text-indent: -999rem;
+      background: url(../images/key-hide.png) no-repeat center/33%;
+    }
+    // back
+    &.key-back {
+      text-indent: -999rem;
+      background-repeat: no-repeat;
+      background-size: 34%;
+      background-position: center;
+    }
+    // 回车键
+    &.key-ent {
+      background: #49a6ff;
+      color: #fff;
+      &:active { background: rgba(73, 166, 255, 0.7) }
+    }
+    // 空白键
+    &.key-dis {
+      text-indent: -999rem;
+      background: #d8d8d8;
+    }
+    
+    &:active { background-color: #d8d8d8 }
+  }
+  
+  ul.col li.key-back,
+  [class*=line_] > li.key-back {
+    background-image: url(../images/key-back.png);
+  }
+  
+  &.keyAll ul.number { width: 100%; }
+  
+  ul.number {
+    width: 75%;
+    
+    li {
+      padding: 31px 0;
+      
+      &.key-back { background-size: 22%; }
+    }
+  }
+  .num-other {
+    width: 25%;
+    
+    li { padding: 84px 0; }
+  }
+  
+  [class*=line_] {
+    display: flex;
+    display: -webkit-flex;
+    background: #d7dadf;
+    
+    > li {
+      flex: 1;
+      -webkit-flex: 1;
+      text-align: center;
+      color: #333;
+      background-color: #fff;
+      border-radius: 8px;
+      line-height: 80px;
+      margin: 8px 6px;
+      font-size: 40px;
+      transition: transform .1s linear;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, .4);
+      
+      &[class*=key-] {
+        background-color: #b7bdc6;
+        background-repeat: no-repeat;
+        background-size: 46%;
+        background-position: center;
+      }
+      &:active { transform: scale(.9); }
+    }
+  }
+  
+  .line_1 { padding: 0 30px; }
+  
+  .line_2 > li {
+    &.key-switch,
+    &.key-back {
+      padding: 0 15px;
+      text-indent: -999rem;
+    }
+  }
+  
+  .line_3 > li {
+    &.space { padding: 0 94px; }
+  }
+  
+  //字母键盘小写
+  &.letter {
+    .line_2 > li.key-switch {
+      background-image: url(../images/key-caps1.png);
+    }
+  }
+  //字母键盘大写
+  &.upper-letter {
+    .line_2 > li.key-switch {
+      background: #fff url(../images/key-caps2.png);
+    }
+  }
+  
+  &.symbol {
+    .line_1 { padding: 0; }
+    .line_2 > li {
+      &.key-switch { text-indent: 0; }
+    }
+  }
+  
+  //密码弹层
+  .pwd-head {
+    line-height: 88px;
+    text-align: center;
+    font-size: 32px;
+    color: #333;
+    position: relative;
+    
+    > em {
+      position: absolute;
+      width: 88px;
+      text-align: center;
+      left: 0;
+    }
+  }
+}
