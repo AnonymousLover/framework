@@ -1,31 +1,20 @@
 <template>
   <div class="model-container"
-       :class="[ typeClass ]"
-       @tap="click">
+       :class="[ typeClazz ]"
+       @tap="_tap">
     <slot/>
   </div>
 </template>
 <script type="text/babel">
-
   import container from '../mixins/container'
 
   export default {
-    mixins  : [container],
-    props   : {
-      position: ''
-    },
-    methods : {
-      click(event) {
-        let classList = event.target.classList;
-        if (classList.contains('model-container'))
-          this._hide();
+    mixins : [container],
+    methods: {
+      _tap(event) {
+        const { classList } = event.target;
+        classList.contains('model-container') && this.display(false);
         event.stopPropagation();
-      }
-    },
-    computed: {
-      typeClass() {
-        return (this.show ? ['active'] : [])
-          .concat(this.position).join(' ');
       }
     }
   }

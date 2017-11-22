@@ -1,9 +1,9 @@
 <template>
-  <div class="key-body complex" :class="typeClass()">
+  <div class="key-body complex" :class="[ typeClazz ]">
     <slot/><!-- 内嵌插槽--组合组件  -->
     <h5><i/>安全键盘</h5>
-    <ul v-for="(b,i) in keys" :key="i" :class="'line_'+i" @tap="_click">
-      <li v-for="(k,j) in ks" :key="j" :class="getClass(k)" v-html="k"/>
+    <ul v-for="(b,i) in boardKey" :key="i" :class="'line_'+i" @tap="_tap">
+      <li v-for="(k,j) in b" :key="j" :class="getClass(k)" v-html="k"/>
     </ul>
   </div>
 </template>
@@ -11,23 +11,72 @@
   import '../../../less/keyboard.less'
 
   export default {
+    props   : {
+      type : { default: 'lower' },
+      click: Function
+    },
     data() {
-      this.type = 'lower';
-      return {
-        keys: [
-          'qwertyuiop'.split(''),
-          'asdfghjkl'.split(''),
-          ['upper'].concat('zxcvbnm'.split('')).concat('back'),
-          ['.?123', 'space', '确定']
-        ]
+      let boardType = this.type;
+      return { boardKey: this.buildKeys(boardType), boardType }
+    },
+    computed: {
+      typeClazz() {
+        switch (this.boardType) {
+          case 'upper':
+            return 'upper-letter';      //大写
+          case 'lower':
+          case 'ABC':
+            return 'letter';            //字母
+          case '.?123':
+          case '123':
+          case '#+=':
+            return 'symbol';            //符号
+        }
       }
     },
-    props  : {
-      click: ''
+    watch   : {
+      boardType(type) {
+        const boardKey = this.buildKeys(type);
+        if (boardKey) this.boardKey = boardKey;
+      }
     },
-    methods: {
-      getClass(n) {
-        switch (n) {
+    methods : {
+      buildKeys(type) {
+        switch (type) {
+          case 'upper':
+            return [
+              'QWERTYUIOP'.split(''),
+              'ASDFGHJKL'.split(''),
+              ['lower'].concat('ZXCVBNM'.split('')).concat('back'),
+              ['.?123', 'space', '确定']
+            ]
+          case 'ABC':
+          case 'lower':
+            return [
+              'qwertyuiop'.split(''),
+              'asdfghjkl'.split(''),
+              ['upper'].concat('zxcvbnm'.split('')).concat('back'),
+              ['.?123', 'space', '确定']
+            ]
+          case '.?123':
+          case '123':
+            return [
+              '1234567890'.split(''),
+              '-/:;()$&@"'.split(''),
+              ['#+='].concat('.,?!\''.split('')).concat('back'),
+              ['ABC', 'space', '确定']
+            ]
+          case '#+=':
+            return [
+              '[]{}#%^*+='.split(''),
+              '_\\|~<>€£¥•'.split(''),
+              ['123'].concat('.,?!\''.split('')).concat('back'),
+              ['ABC', 'space', '确定']
+            ]
+        }
+      },
+      getClass(key) {
+        switch (key) {
           case 'upper':
           case 'lower':
           case 'ABC':
@@ -43,62 +92,9 @@
             return 'key-ent';
         }
       },
-      typeClass() {
-        switch (this.type) {
-          case 'upper':
-            return 'upper-letter';     //大写
-          case 'lower':
-          case 'ABC':
-            return 'letter';    //字母
-          case '.?123':
-          case '123':
-          case '#+=':
-            return 'symbol';    //符号
-        }
-      },
-      switchCase(type) {
-        let keys = [];
-        switch (type) {
-          case 'upper':
-            keys = [
-              'QWERTYUIOP'.split(''),
-              'ASDFGHJKL'.split(''),
-              ['lower'].concat('ZXCVBNM'.split('')).concat('back'),
-              ['.?123', 'space', '确定']
-            ];
-            break;
-          case 'ABC':
-          case 'lower':
-            keys = [
-              'qwertyuiop'.split(''),
-              'asdfghjkl'.split(''),
-              ['upper'].concat('zxcvbnm'.split('')).concat('back'),
-              ['.?123', 'space', '确定']
-            ];
-            break;
-          case '.?123':
-          case '123':
-            keys = [
-              '1234567890'.split(''),
-              '-/:;()$&@"'.split(''),
-              ['#+='].concat('.,?!\''.split('')).concat('back'),
-              ['ABC', 'space', '确定']
-            ];
-            break;
-          case '#+=':
-            keys = [
-              '[]{}#%^*+='.split(''),
-              '_\\|~<>€£¥•'.split(''),
-              ['123'].concat('.,?!\''.split('')).concat('back'),
-              ['ABC', 'space', '确定']
-            ]
-        }
-        keys.length && (this.keys = keys);
-        this.type = type;
-      },
-      _click(event) {
-        var target = event.target, result;
-        if (target.tagName == 'LI') {
+      _tap(event) {
+        let target = event.target, result;
+        if (target.tagName === 'LI') {
           result = target.innerHTML;
           switch (result) {
             case 'upper':
@@ -107,7 +103,7 @@
             case '.?123':
             case '123':
             case '#+=':
-              return this.switchCase(result);
+              return this.boardType = result;
             default:
               this.click && this.click(true, result);
           }

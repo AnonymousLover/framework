@@ -48,7 +48,10 @@ module.exports = opts => {
     // 插件
     plugins: [
       // 分离框架级别 css 文件
-      new _extract(`[name]/[name].[chunkHash:6].css`, { allChunks: true }),
+      new _extract({
+        filename : `style/[name].[chunkHash:6].css`,
+        allChunks: true
+      }),
     ]
   })
 }

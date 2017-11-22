@@ -2,11 +2,7 @@
   <v-modal v-model="showModal">
     <div class="action-sheet">
       <ul class="item-view">
-        <li class="item-list"
-            v-for="(b,i) in btnList"
-            :key="i"
-            @tap="_click(i)"
-            v-html="b.text == null ? b : b.text"/>
+        <li class="item-list" v-for="(b,i) in btnList" :key="i" @tap="_click(i)" v-html="b.text == null ? b : b.text"/>
       </ul>
       <ul class="item-view">
         <li class="item-list cancel" @tap="_click(false)">取消</li>
@@ -20,7 +16,7 @@
   export default {
     mixins : [_modal],
     props  : {
-      btnList: { default: [] }
+      btnList: { default: () => [] }
     },
     methods: {
       _click(item) {

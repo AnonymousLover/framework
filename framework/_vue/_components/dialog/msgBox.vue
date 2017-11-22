@@ -3,18 +3,15 @@
     <div class="popup">
       <div class="popup-head" v-if="title">
         <h3 class="popup-title" v-html="title"/>
-        <h5 class="popup-sub-title" v-if="subTitle" v-html="subTitle"/>
       </div>
       <div class="popup-body">
         <slot>{{ content }}</slot>
       </div>
+      <div class="flex-box popup-btn-wrapper">
+        <span class="flex btn" v-for="(b, i) in btnList" :key="i" :class="b.type||'btn-default'"
+              @tap="close(i)" v-html="b.text"/>
+      </div>
       <div class="popup-btns" v-if="btnList">
-        <span class="btn"
-              v-for="(b, i) in btnList"
-              :key="i"
-              :class="b.type||'btn-default'"
-              @tap="close(i)"
-              v-html="b.text"/>
       </div>
     </div>
   </v-pop>
@@ -25,19 +22,12 @@
   export default {
     mixins : [_modal],
     props  : {
-      title   : '',
-      subTitle: '',
-      content : {
-        default: ''
-      },
-      btnList : {
-        default: []
-      }
+      title  : { default: '' },
+      content: { default: '' },
+      btnList: { default: () => [] }
     },
     methods: {
-      close(idx) {
-        this.click && this.click(idx);
-      }
+      close(idx) { this.click && this.click(idx) }
     }
   }
 </script>

@@ -1,12 +1,12 @@
 <template>
-  <div class="key-body m-row" :class="[ getClazz ]">
+  <div class="key-body row" :class="[ getClazz ]">
     <slot/><!-- 内嵌插槽--组合组件  -->
     <h5><i/>安全键盘</h5>
-    <ul class="col number m-row" @tap="_click">
-      <li class="col-4" v-for="(k,idx) in keys" :key="idx" :class="getClass(k)" v-html="k"/>
+    <ul class="col number row" @tap="_tap">
+      <li class="col-4" v-for="(k,i) in keys" :key="i" :class="getClass(k)" v-html="k"/>
     </ul>
-    <ul class="col num-other" @tap="_click">
-      <li v-for="(o,idx) in others" :key="idx" :class="getClass(o)" v-html="o"/>
+    <ul class="col num-other" @tap="_tap">
+      <li v-for="(o,i) in others" :key="i" :class="getClass(o)" v-html="o"/>
     </ul>
   </div>
 </template>
@@ -15,12 +15,8 @@
 
   export default {
     props   : {
-      keys  : {
-        default: []
-      },
-      others: {
-        default: []
-      },
+      keys  : { default: [] },
+      others: { default: [] },
       click : ''
     },
     computed: {
@@ -35,9 +31,9 @@
       getClass(n) {
         return /[a-z|A-Z]/.test(n) ? `key-${n}` : /\*/.test(n) ? 'key-dis' : /确定/.test(n) ? 'key-ent' : '';
       },
-      _click(event) {
-        var target = event.target, result;
-        if (target.tagName == 'LI') {
+      _tap(event) {
+        let target = event.target, result;
+        if (target.tagName === 'LI') {
           result = target.innerHTML;
           switch (result) {
             case '*':

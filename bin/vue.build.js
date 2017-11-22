@@ -30,7 +30,7 @@ const compilerCallback = (err, stats) => {
 }
 
 // 执行建构
-if (!isProd) {
+if (isProd) {
   compiler.run(compilerCallback)
 } else {
   compiler.watch({}, compilerCallback)

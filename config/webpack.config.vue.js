@@ -31,8 +31,8 @@ module.exports = opts => {
     },
     // 定义输出
     output : {
-      path      : deployPath,
-      publicPath: 'http://127.0.0.1:20004/'
+      path         : deployPath,
+      publicPath   : config.publicPath,
     },
     // 插件
     plugins: [
@@ -55,7 +55,7 @@ module.exports = opts => {
           return order1 - order2;
         }
       }),
-      new _clean([`${deployPath}/`], { root: rootPath, dry: false })
+      new _clean([`${deployPath}/`], { root: rootPath, dry: false }),
     ].concat([])
   })
 }

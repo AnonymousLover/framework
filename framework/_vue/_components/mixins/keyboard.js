@@ -1,4 +1,4 @@
-import { $keyboard } from '../../components/keyboard'
+import $keyboard from '../../components/keyboard'
 
 export default {
   methods: {
@@ -32,7 +32,7 @@ export default {
         default:
           value.push(char);
       }
-      if (maxLen != null) {
+      if (maxLen !== null && maxLen !== undefined) {
         //value.length >= maxLen && $keyboard.hide();//收起键盘
         value.length > maxLen && value.splice(maxLen);
       }
