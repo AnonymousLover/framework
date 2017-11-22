@@ -57,29 +57,28 @@
   &.active {
     transform: translate3d(0, 0, 0) translateZ(0);
   }
-  /*
+}
+
+/*
   *actionsheet
   */
-  .action-sheet {
+.action-sheet {
+  background: transparent;
+  
+  .item-view {
+    margin: 18px 36px;
+    text-align: center;
     background: transparent;
     
-    .item-view {
-      margin: 24px 36px;
-      text-align: center;
-      box-shadow: none;
-      background: transparent;
+    .item-list {
+      background: #fff;
+      color: #3d98cc;
       
-      .item-list {
-        background: #fff;
-        letter-spacing: .1rem;
-        color: #3d98cc;
-        
-        &:active { opacity: .8 }
-        &:first-of-type { border-radius: 4px 4px 0 0; }
-        &:last-of-type { border-radius: 0 0 4px 4px; }
-        &:first-of-type:last-of-type { border-radius: 4px; }
-        &.cancel { color: #ff8568 }
-      }
+      &:active { opacity: .8 }
+      &:first-of-type { border-radius: 4px 4px 0 0; }
+      &:last-of-type { border-radius: 0 0 4px 4px; }
+      &:first-of-type:last-of-type { border-radius: 4px; }
+      &.cancel { color: #ff8568 }
     }
   }
 }
@@ -146,10 +145,9 @@
   &.bottom { top: 70%; z-index: 9991 }
   
   .popup {
-    border-radius: 4px;
-    width: 550px;
+    border-radius: 8px;
+    width: 500px;
     font-size: 30px;
-    box-shadow: 0 0 2px rgba(0, 0, 0, .2);
     text-align: center;
     background-color: #fff;
     
@@ -159,6 +157,7 @@
       .popup-title { font-size: 1.1em; font-weight: normal }
       ~ .popup-body { padding: 24px 24px 48px; }
     }
+    
     .popup-body {
       padding: 48px 24px;
       font-size: .95em;
@@ -166,21 +165,16 @@
       overflow-x: hidden;
     }
     
-    .popup-btns {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-direction: normal;
-      -webkit-box-orient: horizontal;
-      -webkit-flex-direction: row;
-      flex-direction: row;
+    .popup-btn-wrapper {
+      border-top: 1PX solid #ccc;
+      
       .btn {
-        padding: 20px 0;
-        -webkit-box-flex: 1;
-        -webkit-flex: 1;
-        flex: 1;
-        display: block;
         background: inherit;
+        border-radius: 0;
+        
+        + .btn {
+          border-left: 1PX solid #ccc;
+        }
       }
     }
   }
@@ -204,20 +198,6 @@
       color: #999;
     }
   }
-}
-
-.btn {
-  padding: 0 30px;
-  background-color: #f8f8f8;
-  color: #444;
-  position: relative;
-  display: inline-block;
-  border: none;
-  text-align: center;
-  text-overflow: ellipsis;
-  
-  &.btn-positive { color: #3d98cc; }
-  &.btn-default { color: #333 }
 }
 
 @keyframes loading-rotate {

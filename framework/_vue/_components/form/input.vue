@@ -1,20 +1,16 @@
 <template>
-  <div class="form-input"
-       :class="{'error':error,'on':isOn,'focus':isFocus,'small':($slots.default || []).length}">
+  <div class="form-input" :class="[ typeClass ]" @tap="inputTap">
     <label v-if="label" v-html="label"/>
     <input autocomplete="off"
            spellcheck="false"
            :type="type"
            :maxlength="maxLength"
-           :readonly="readonly"
            :placeholder="placeholder"
-           :value="inputVal"
            @focus="focusBlur"
            @blur="focusBlur"
-           @tap="click"
-           @input="input"/>
+           v-model="inputValue">
     <i v-if="!readonly" class="icon-font clear" @tap="clear"/>
-    <small class="err-tip" v-html="error"/>
+    <small class="err-tip" v-html="errorMsg"/>
     <slot/>
   </div>
 </template>
@@ -22,66 +18,58 @@
 
   import '../../../less/form.less'
 
-  const skipValidate = () => {flag: true};
-
   export default {
-    props  : {
-      label      : {},
-      type       : {
-        default: 'text'
-      },
+    props   : {
+      label      : '',
+      type       : { default: 'text' },
       name       : '',
       value      : '',
       maxLength  : '',
-      require    : {
-        default: false
-      },
-      readonly   : {
-        default: false,
-      },
+      require    : { default: false },
+      readonly   : { default: false },
       placeholder: '',
       validate   : '',
       click      : ''
     },
     data() {
       return {
-        error   : '',
-        isOn    : false,
-        isFocus : false,
-        inputVal: ''
+        errorMsg  : '',
+        showClear : false,
+        showFocus : false,
+        inputValue: this.value
       }
     },
-    mounted() {
-      this.inputVal = this.value;
-    },
-    methods: {
+    methods : {
       focusBlur(event) {
-        let value    = this.inputVal,
-            isFocus  = event.type === 'focus';
-        this.isOn    = isFocus || !!value;
-        this.isFocus = isFocus;
+        let value      = this.inputValue,
+            isFocus    = event.type === 'focus';
+        this.showClear = isFocus || !!value;
+        this.showFocus = isFocus;
       },
-      input(event) {
-        this.inputVal = event.target.value;
-      },
-      clear(event) {
-        this.inputVal = '';
+      clear() { this.inputValue = ''},
+      inputTap() { this.readonly && this.click && this.click() }
+    },
+    computed: {
+      typeClass() {
+        const { errorMsg, showClear, showFocus, $slots, readonly } = this;
+        return [
+          errorMsg ? 'error' : '',
+          showClear ? 'on' : '',
+          showFocus ? 'focus' : '',
+          ($slots.default || []).length ? 'small' : '',
+          readonly ? 'readonly' : ''
+        ];
       }
     },
-    watch  : {
-      $props: {
-        deep: true,
-        handler(props) {
-          this.inputVal = props.value || '';
-        }
-      },
-      inputVal(val) {
-        let validate = this.validate || skipValidate,
-            error    = validate(val) || {};
-        this.isOn    = !!val;
-        this.error   = error.message;
+    watch   : {
+      inputValue(val) {
+        let validate   = this.validate,
+            error      = validate ? validate(val) : {};
+        this.showClear = !!val;
+        this.errorMsg  = error.message;
         this.$emit('input', val);
-      }
+      },
+      value(val) { this.inputValue = val }
     }
   }
 </script>

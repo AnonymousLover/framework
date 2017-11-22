@@ -1,7 +1,7 @@
 <template>
-  <v-page :options="options">
-    <button v-for="btn in btnList" @tap="btn.click" v-html="btn.text"/>
-  </v-page>
+  <div>
+    <button class="btn-block" v-for="btn in btnList" @tap="btn.click" v-html="btn.text"/>
+  </div>
 </template>
 <script type="text/babel">
   import $dialog from '../../framework/_vue/components/dialog'

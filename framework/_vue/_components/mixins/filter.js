@@ -1,12 +1,13 @@
-import { isFunction } from '../../services/common'
+import { isFunction, isNull } from '../../../util/util'
+
 import vFilter from '../filter/filter.vue'
 
-export const $watch = function (list, filterList, selectMap) {
+export const $watch = (list, filterList, selectMap) => {
   let len     = filterList.length,
-      _select = selectMap[len] == null ? {} : selectMap[len],
+      _select = isNull(selectMap[len]) ? {} : selectMap[len],
       _item   = null, children;
-  list.forEach(item => {
-    if ((_select.code == null && item.select)
+  list.every(item => {
+    if ((isNull(_select.code) && item.select)
       || item.code === _select.code) {
       return _item = item, false;
     }
@@ -19,14 +20,10 @@ export const $watch = function (list, filterList, selectMap) {
 }
 
 export default {
-  components: {
-    vFilter
-  },
+  components: { vFilter },
   props     : {
-    filterMap: {
-      default: []
-    },
-    change   : ''
+    filterMap: { default: [] },
+    change   : Function
   },
   data() {
     return {
@@ -42,7 +39,7 @@ export default {
   methods   : {
     _commit(idx) {
       this.$nextTick(() => {
-        isFunction(this.change) && idx + 1 == this.list.length && this.change(this.select)
+        isFunction(this.change) && idx + 1 === this.list.length && this.change(this.select)
       })
     }
   },
@@ -50,11 +47,7 @@ export default {
     this.list = $watch(this.filterMap, [], this.select)
   },
   watch     : {
-    filterMap(val) {
-      this.list = $watch(val, [], this.select);
-    },
-    select(val) {
-      this.list = $watch(this.filterMap, [], val);
-    }
+    filterMap(val) { this.list = $watch(val, [], this.select) },
+    select(val) { this.list = $watch(this.filterMap, [], val) }
   }
 }

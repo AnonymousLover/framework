@@ -3,7 +3,7 @@ import vKeyboardModal from '../_components/keyboard/keyboard.modal.vue'
 import vKeyboardSimple from '../_components/keyboard/keyboard.simple.vue'
 import vKeyboardComplex from '../_components/keyboard/keyboard.complex.vue'
 import { $modal } from './container'
-import { extend, noop } from '../services/common'
+import { extend, noop } from '../../util/util'
 
 [
   vKeyboardSimple,

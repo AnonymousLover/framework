@@ -6,16 +6,10 @@ import vPop from '../container/pop.vue'
 import vLoad from '../container/load.vue'
 
 export default {
-  components: {
-    vModal,
-    vPop,
-    vLoad
-  },
+  components: { vModal, vPop, vLoad },
   props     : {
-    showModal: {
-      default: false
-    },
-    click    : ''
+    showModal: { default: false },
+    click    : Function
   },
   watch     : {
     showModal(val) {

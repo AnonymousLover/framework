@@ -1,21 +1,12 @@
 <template>
   <div class="carousel-wrapper">
-    <div class="carousel-body"
-         ref="_body"
-         @drag="_drag"
-         @dragend="_dragEnd">
-      <div class="carousel-item"
-           v-for="(image,index) in imgList"
-           :key="index"
-           @tap="_click(image)">
-        <img :src="image.src"/>
+    <div class="carousel-body" ref="_body" @drag="_drag" @dragend="_dragEnd">
+      <div class="carousel-item" v-for="(b,i) in imgList" :key="i" @tap="_click(b)">
+        <img :src="b.src"/>
       </div>
     </div>
-    <ol class="carousel-indicator"
-        ref="_indicator">
-      <li class="indicator"
-          v-for="(item,index) in items"
-          :key="index"/>
+    <ol class="carousel-indicator" ref="_indicator">
+      <li class="indicator" v-for="(b,i) in items" :key="i"/>
     </ol>
   </div>
 </template>
@@ -25,10 +16,10 @@
   export default {
     mixins : [carouselMixins],
     props  : {
-      items : { default: [] },
+      items : { default: () => [] },
       isLoop: { default: false },
       auto  : { default: 0 },
-      click : '',
+      click : Function,
     },
     created() {
       this.initialize();

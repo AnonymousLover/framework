@@ -16,63 +16,68 @@ export default {
   },
   watch  : {
     vStatus(val) {
-      clearTimeout(this._timeout);
-      this._timeout = (val === 2 && this.auto) ? setTimeout(() => {
-        this.vStatus = 0;
-        this.scrollTo(this.scrollX - this.itemWidth, 350);
-      }, ~~this.auto) : null;
+      const that = this;
+      clearTimeout(that._timeout);
+      that._timeout = (val === 2 && that.auto) ?
+        setTimeout(() => {
+          that.vStatus = 0;
+          that.scrollTo(that.scrollX - that.itemWidth, 350);
+        }, ~~that.auto) : null;
     }
   },
   methods: {
     _tick() {
-      let _body      = this.$refs._body,
-          children   = _body.children || [];
-      this.itemWidth = children[0].offsetWidth;
-      this.maxX      = (1 - children.length) * this.itemWidth;
-      this.scrollX   = this.scrollX || (this.isLoop ? -this.itemWidth : 0);
-      this.vStatus   = 2;
-      this.scrollTo(this.scrollX, 0);
+      const that              = this;
+      const { children = [] } = that.$refs._body;
+      // 计算基本属性
+      that.itemWidth          = children[0].offsetWidth;
+      that.maxX               = (1 - children.length) * that.itemWidth;
+      that.scrollX            = that.scrollX || (that.isLoop ? -that.itemWidth : 0);
+      that.vStatus            = 2;
+      that.scrollTo(that.scrollX, 0);
     },
     _drag(event) {
-      if (this.vStatus === 0) return;
-      let detail    = event.detail || {},
-          direction = detail.direction,
-          deltaX    = detail.deltaX || 0,
-          scrollX   = this.scrollX;
-      if (direction === 'left' || direction === 'right') {
-        scrollX = scrollX + (scrollX >= 0 ? direction === 'right' ? 0 : deltaX :
-          scrollX <= this.maxX ? direction === 'left' ? 0 : deltaX : deltaX);
-        scrollX !== this.scrollX && this.setTranslate(scrollX, 0);
-        this.vStatus = 1;
+      const that = this;
+      if (that.vStatus === 0) return;
+      const {
+              direction,
+              deltaX = 0
+            }         = event.detail || {};
+      let { scrollX } = that;
+
+      const index = ['left', 'right'].indexOf(direction); // -1 0 1
+
+      if (index !== -1) {
+        scrollX += (scrollX >= 0 ? index ? 0 : deltaX : scrollX < that.maxX ? !index ? 0 : deltaX : deltaX);
+        scrollX !== that.scrollX && that.setTranslate(scrollX, 0);
+        that.vStatus = 1;
       }
-      this.vStatus === 1 && event.stopPropagation();
+      that.vStatus === 1 && event.stopPropagation();
     },
     _dragEnd(event) {
-      if (this.vStatus === 0) return;
+      const that = this;
+      if (that.vStatus === 0) return;
       let detail    = event.detail || {},
           direction = detail.direction,
           deltaX    = Math.abs(detail.deltaX),
           speed     = deltaX / detail.deltaTime,
-          itemWidth = this.itemWidth;
+          itemWidth = that.itemWidth;
       deltaX        = (speed > .35 && deltaX * 4 > itemWidth) || deltaX * 2 > itemWidth ?
         direction === 'left' ? -itemWidth : itemWidth : 0;
-      this.vStatus  = 0;
-      this.scrollTo(this.scrollX + deltaX, 300);
+      that.vStatus  = 0;
+      that.scrollTo(that.scrollX + deltaX, 300);
     },
     scrollTo(scrollX, time) {
-      let itemWidth = this.itemWidth,
-          maxX      = this.maxX;
-      this.setTranslate(scrollX = scrollX > 0 ? 0 : scrollX < maxX ? maxX : scrollX, time);
+      const that                = this;
+      const { itemWidth, maxX } = that;
+      that.setTranslate(scrollX = scrollX > 0 ? 0 : scrollX < maxX ? maxX : scrollX, time);
       time ? setTimeout(() => {
-        this.isLoop && this.setTranslate(scrollX = scrollX >= 0 ?
-          maxX + itemWidth : scrollX <= maxX ? -itemWidth : scrollX, 0);
-        this.vStatus = 2;
-        this.scrollX = scrollX;
-        this.indicatorClass();
-      }, time) : this.indicatorClass();
+        that.isLoop && this.setTranslate(scrollX = scrollX >= 0 ? maxX + itemWidth : scrollX <= maxX ? -itemWidth : scrollX, 0);
+        that.vStatus = 2, that.scrollX = scrollX, that.indicatorClass();
+      }, time) : that.indicatorClass();
     },
     setTranslate(x, time) {
-      let _body                            = this.$refs._body;
+      const { _body }                      = this.$refs;
       _body.style.webkitTransitionDuration = (time || 0) + 'ms';
       _body.style.webkitTransform          = 'translate3d(' + x + 'px,0,0) translateZ(0)';
     },

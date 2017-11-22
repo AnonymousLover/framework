@@ -1,10 +1,7 @@
 <template>
   <div class='input-group'>
     <slot/>
-    <button
-      ref="btnNode"
-      v-html="btnText"
-      @tap="_submit"/>
+    <button ref="btnNode" v-html="btnText" @tap="_submit"/>
   </div>
 </template>
 <script type="text/babel">
@@ -13,10 +10,8 @@
   export default {
     mixins : [formMixins],
     props  : {
-      btnText: {
-        default: '确定'
-      },
-      submit : ''
+      btnText: { default: '确定' },
+      submit : Function
     },
     methods: {
       _submit(event) {

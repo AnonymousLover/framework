@@ -22,10 +22,6 @@ let arr                         = [],
 
 export const isBrowser = !!(typeof window !== 'undefined' && window.document);
 
-export function lowercase(string) { return isString(string) ? string.toLowerCase() : string }
-
-export function uppercase(string) { return isString(string) ? string.toUpperCase() : string }
-
 export function isWindow(object) { return object && object.window === object }
 
 export function isType(obj) { return typeof obj === _OBJ || typeof obj === _FUN ? class2type[toString.call(obj)] || _OBJ : typeof obj }
@@ -54,26 +50,8 @@ export function isNull(obj) { return obj === null || isUndefined(obj)}
 
 export function isObjectEmpty(obj) { return !(obj && Object.keys(obj).length) }
 
-export function each(obj, callback) {
-  let length, i = 0;
-  if (isArrayLike(obj)) {
-    for (length = obj.length; i < length; i++) {
-      if (callback.call(obj[i], i, obj[i]) === false)
-        break;
-    }
-  } else {
-    for (i in obj) {
-      if (obj.hasOwnProperty(i) && callback.call(obj[i], i, obj[i]) === false)
-        break;
-    }
-  }
-  return obj;
-}
-
-each('Boolean Number String Function Array Date RegExp Object Error Symbol'.split(' '),
-  function (i, name) {
-    class2type["[object " + name + "]"] = name.toLowerCase();
-  });
+'Boolean Number String Function Array Date RegExp Object Error Symbol'
+  .split(' ').forEach(name => {class2type["[object " + name + "]"] = name.toLowerCase()})
 
 export function isArrayLike(object) {
   if (isNull(object) || isWindow(object)) return false;
@@ -225,7 +203,7 @@ function forEachSorted(obj, iterator, context) {
   return keys;
 }
 
-export function toQueryString(params) {
+export function toQueryStr(params) {
   let parts = [];
   forEachSorted(params, function (value, key) {
     if (isNull(value)) return;
@@ -238,11 +216,37 @@ export function toQueryString(params) {
   return parts.join("&");
 }
 
+//拼接url
 export function buildUrl(url, params) {
   if (!params) return url;
-  let parts = toQueryString(params);
-  if (parts.length > 0) url += (url.indexOf('?') === -1 ? '?' : '&') + parts;
-  return url;
+  let parts = toQueryStr(params);
+  return parts.length ? url + (url.indexOf('?') === -1 ? '?' : '&') + parts : url;
+}
+
+//帧动画
+const raf        = requestAnimationFrame || webkitRequestAnimationFrame,
+      cancelRaf  = cancelAnimationFrame || webkitCancelAnimationFrame,
+      rafSupport = !!cancelRaf;
+
+export const $$raf = rafSupport ? (fn) => {
+  let id = raf(fn);
+  return () => { cancelRaf(id) }
+} : (fn) => {
+  let timer = setTimeout(fn, 16.666); // 1000 / 60 = 16.666
+  return () => { clearTimeout(timer) }
+};
+$$raf.supported    = rafSupport;
+
+// 防抖
+export function debounce(fn, delay) {
+  let timer = null
+  return function (...args) {
+    if (timer) clearTimeout(timer)
+    timer = setTimeout(() => {
+      fn.apply(this, args)
+      timer = null
+    }, delay)
+  }
 }
 
 /*
@@ -297,6 +301,25 @@ export const $body = {
   _body      : body
 }
 
+let dropElement = createElement('div', { className: 'backdrop-container' }),
+    dropHolds   = 0;
+isBrowser && $body.append(dropElement);
+
+export const $backdrop = {
+  retain() {
+    ++dropHolds && $$raf(() => {
+      toggleClass(dropElement, 'active', true);
+      $body.locked();
+    });
+  },
+  release() {
+    --dropHolds || $$raf(function () {
+      toggleClass(dropElement, 'active');
+      $body.locked(true);
+    });
+  }
+};
+
 //vue-router
 
 let timer = null;
@@ -312,7 +335,7 @@ export function routeConfig(router) {
     }
     next();
   });
-  router.afterEach((to, from) => {
+  router.afterEach(() => {
     if (timer) clearTimeout(timer);
     else {
       $body.addClass('on');

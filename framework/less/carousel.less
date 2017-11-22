@@ -19,14 +19,12 @@
       white-space: nowrap;
       cursor: pointer;
       
-      &.m-row {
+      &.row {
         padding: 25px 0 44px;
         
-        [class^=col-] {
-          img {
-            width: 50%;
-            margin: 14px auto 8px;
-          }
+        [class^=col-] img {
+          width: 50%;
+          margin: 14px auto 8px;
         }
       }
       span {
@@ -37,7 +35,7 @@
         margin: 0 auto;
         display: block;
       }
-      &:not(.m-row) img {
+      &:not(.row) img {
         width: 100%;
         height: auto;
       }

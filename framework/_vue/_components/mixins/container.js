@@ -1,36 +1,29 @@
 //
 import '../../../less/dialog.less'
 
+import { debounce, $backdrop } from '../../../util/util'
+
 export default {
-  props  : {
-    value: {
-      default: false
-    }
+  props   : {
+    value: { default: !1 }
   },
   data() {
-    if (this.value)
-      this._timer = setTimeout(() => this._show(), 16.7);
-    return {
-      show: false
-    }
+    this.display(this.value);
+    return { show: !1 }
   },
-  methods: {
-    _show() {
-      this.show = true;
-    },
-    _hide() {
-      this.show = false;
-    }
+  methods : {
+    display: debounce(function(val) { this.show = !!val }, 16.7)
+  },
+  computed: {
+    typeClazz() { return this.show ? 'active' : '' }
   },
   beforeDestroy() {
-    this.show && $backdrop.release();
+    this.show && $backdrop.release()
   },
-  watch  : {
-    value(val) {
-      this._timer && clearTimeout(this._timer);
-      this._timer = setTimeout(() => this[val ? '_show' : '_hide'](), 16.7)
-    },
+  watch   : {
+    value(val) { this.display(val) },
     show(val) {
+      $backdrop[val ? 'retain' : 'release']();
       this.$emit('input', !!val)
     }
   }
