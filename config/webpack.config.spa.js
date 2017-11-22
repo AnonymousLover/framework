@@ -17,9 +17,11 @@ module.exports = opts => {
   return merge(assign(opts), {
     // 定义应用入口
     entry  : {
-      base    : path.join(rootPath, 'framework/base.js'),
-      plugin  : path.join(rootPath, 'framework/plugin.js'),      // 插件级 JS
-      adaptive: path.join(rootPath, 'framework/adaptive.js'),
+      base  : [
+        path.join(rootPath, 'framework/adaptive.js'),
+        path.join(rootPath, 'framework/base.js'),
+      ],
+      plugin: path.join(rootPath, 'framework/plugin.js'),      // 插件级 JS
     },
     // 模块加载器规则
     module : {

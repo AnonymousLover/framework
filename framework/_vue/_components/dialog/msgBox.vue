@@ -11,8 +11,6 @@
         <span class="flex btn" v-for="(b, i) in btnList" :key="i" :class="b.type||'btn-default'"
               @tap="close(i)" v-html="b.text"/>
       </div>
-      <div class="popup-btns" v-if="btnList">
-      </div>
     </div>
   </v-pop>
 </template>

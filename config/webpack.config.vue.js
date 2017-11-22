@@ -28,11 +28,12 @@ module.exports = opts => {
     entry  : {
       [appName]: path.join(srcPath, 'index.js'),                  // 应用级
       common   : path.join(rootPath, 'framework/_vue/common.js'),      // 框架级 JS 和 CSS
+      // component: path.join(rootPath, 'framework/_vue/index.js'),      // 框架级 JS 和 CSS
     },
     // 定义输出
     output : {
-      path         : deployPath,
-      publicPath   : config.publicPath,
+      path      : deployPath,
+      publicPath: config.publicPath,
     },
     // 插件
     plugins: [
@@ -49,7 +50,7 @@ module.exports = opts => {
         filename      : `${appName}/index.html`,
         inject        : 'body',
         chunksSortMode: function (chunk1, chunk2) {
-          let order  = ['manifest', 'adaptive', 'plugin', 'base', 'common', appName],
+          let order  = ['manifest', 'plugin', 'common', 'base', 'component', appName],
               order1 = order.indexOf(chunk1.names[0]),
               order2 = order.indexOf(chunk2.names[0]);
           return order1 - order2;

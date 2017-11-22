@@ -15,6 +15,7 @@
   </v-form>
 </template>
 <script type="text/babel">
+
   import keyboardMixins from '../../framework/_vue/_components/mixins/keyboard'
   import $keyboard from '../../framework/_vue/components/keyboard'
   import { vInput, vForm } from '../../framework/_vue/components/form'

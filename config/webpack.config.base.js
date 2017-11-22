@@ -1,8 +1,9 @@
-const webpack   = require('webpack');
-//postcss
-const px2rem    = require('postcss-pxtorem');
-const autofixer = require('autoprefixer')
+const webpack              = require('webpack');
+const PreloadWebpackPlugin = require('preload-webpack-plugin');
 
+//postcss
+const px2rem       = require('postcss-pxtorem');
+const autofixer    = require('autoprefixer')
 //webpack的基础配置
 const globalConfig = require('./metadata.webpack.config');
 
@@ -37,6 +38,14 @@ module.exports.assign = opts => {
     // source map
     // devtool: config.devtool,
     plugins: [
+      new webpack.optimize.ModuleConcatenationPlugin(),
+      // 预加载
+      // new PreloadWebpackPlugin({
+      //   rel          : 'preload',
+      //   as           : 'script',
+      //   include      : 'all',
+      //   fileBlacklist: [/\.(css|map)$/, /base?.+/]
+      // })
       //压缩 JS
       // new webpack.optimize.UglifyJsPlugin({ sourceMap: !!config.sourceMap }),
     ]

@@ -4,6 +4,7 @@
   </div>
 </template>
 <script type="text/babel">
+
   import $dialog from '../../framework/_vue/components/dialog'
   import $log from '../../framework/util/log'
 

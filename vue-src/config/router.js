@@ -1,4 +1,5 @@
 import VueRouter from 'vue-router'
+
 import { routeConfig } from '../../framework/util/util'
 
 const routes = [
