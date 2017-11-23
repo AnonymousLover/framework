@@ -26,9 +26,9 @@ module.exports = opts => {
   return merge(spa(opts), {
     // 定义应用入口
     entry  : {
-      [appName]: path.join(srcPath, 'index.js'),                  // 应用级
-      common   : path.join(rootPath, 'framework/_vue/common.js'),      // 框架级 JS 和 CSS
-      // component: path.join(rootPath, 'framework/_vue/index.js'),      // 框架级 JS 和 CSS
+      [appName]      : path.join(srcPath, 'index.js'),                  // 应用级
+      'vue-common'   : path.join(rootPath, 'framework/_vue/common.js'),      // 框架级 JS 和 CSS
+      'vue-component': path.join(rootPath, 'framework/_vue/index.js'),      // 框架级 JS 和 CSS
     },
     // 定义输出
     output : {
@@ -42,7 +42,7 @@ module.exports = opts => {
       // 公用模块提取
       new webpack.optimize.CommonsChunkPlugin({
         // "manifest" 为提取运行期代码，确保公用文件缓存
-        name: ["common", "manifest"]
+        name: ['vue-component', 'vue-common', "manifest"]
       }),
       // 入口页面自动生成
       new _html({
@@ -50,7 +50,7 @@ module.exports = opts => {
         filename      : `${appName}/index.html`,
         inject        : 'body',
         chunksSortMode: function (chunk1, chunk2) {
-          let order  = ['manifest', 'plugin', 'common', 'base', 'component', appName],
+          let order  = ['manifest', 'plugin', 'base', 'vue-common', 'vue-component', appName],
               order1 = order.indexOf(chunk1.names[0]),
               order2 = order.indexOf(chunk2.names[0]);
           return order1 - order2;

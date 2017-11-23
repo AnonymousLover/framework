@@ -35,6 +35,7 @@ const adaptive = (baseFontSize = 100,
 		// 未缩放时布局适口宽大于 525，按照 525 宽度适配
 		if (width * scale > 525) rootRem = 525 / scale / 750 * baseFontSize;
 		docEl.style.fontSize = rootRem + 'px';
+		doc.body.style.fontSize = `${12/scale}px`;
 	}
 	window.addEventListener('orientationchange', () => setTimeout(refreshRem, 100));
 	refreshRem();
