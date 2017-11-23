@@ -13,12 +13,8 @@
 
   export default {
     mixins : [carouselMixins],
-    created() {
-      this.initialize()
-    },
-    watch  : {
-      vStatus() {}
-    },
+    created() { this.initialize() },
+    watch  : { vStatus() {} },
     methods: {
       initialize() {
         this.vStatus = 0;
