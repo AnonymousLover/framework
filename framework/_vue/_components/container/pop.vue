@@ -1,6 +1,5 @@
 <template>
-  <div class="popup-container"
-       :class="[ typeClazz ]">
+  <div class="popup-container" :class="[ clz ]">
     <slot/>
   </div>
 </template>

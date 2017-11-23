@@ -1,7 +1,5 @@
 <template>
-  <div class="model-container"
-       :class="[ typeClazz ]"
-       @tap="_tap">
+  <div class="model-container" :class="[ clz ]" @tap="tap">
     <slot/>
   </div>
 </template>
@@ -11,7 +9,7 @@
   export default {
     mixins : [container],
     methods: {
-      _tap(event) {
+      tap(event) {
         const { classList } = event.target;
         classList.contains('model-container') && this.display(false);
         event.stopPropagation();

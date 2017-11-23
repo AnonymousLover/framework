@@ -11,9 +11,7 @@ export default {
       vStatus : 0    //当前状态。。0代表锁定状态。1代表滑动状态。2代表自由状态
     }
   },
-  beforeDestroy() {
-    clearTimeout(this._timeout);
-  },
+  beforeDestroy() { clearTimeout(this._timeout) },
   watch  : {
     vStatus(val) {
       const that = this;
@@ -48,22 +46,26 @@ export default {
       const index = ['left', 'right'].indexOf(direction); // -1 0 1
 
       if (index !== -1) {
-        scrollX += (scrollX >= 0 ? index ? 0 : deltaX : scrollX < that.maxX ? !index ? 0 : deltaX : deltaX);
-        scrollX !== that.scrollX && that.setTranslate(scrollX, 0);
+        scrollX += deltaX
+        if (scrollX <= 0 && scrollX >= that.maxX && scrollX !== that.scrollX) {
+          that.setTranslate(scrollX, 0);
+        }
         that.vStatus = 1;
       }
       that.vStatus === 1 && event.stopPropagation();
     },
     _dragEnd(event) {
       const that = this;
-      if (that.vStatus === 0) return;
+      if (that.vStatus !== 1) return;
       let detail    = event.detail || {},
           direction = detail.direction,
-          deltaX    = Math.abs(detail.deltaX),
-          speed     = deltaX / detail.deltaTime,
+          deltaX    = detail.deltaX,
+          $deltaX   = Math.abs(deltaX),
+          speed     = $deltaX / detail.deltaTime,
           itemWidth = that.itemWidth;
-      deltaX        = (speed > .35 && deltaX * 4 > itemWidth) || deltaX * 2 > itemWidth ?
-        direction === 'left' ? -itemWidth : itemWidth : 0;
+      const index   = ['left', 'right'].indexOf(direction); // -1 0 1
+      deltaX        = index !== -1 ? (speed > .35 && $deltaX * 4 > itemWidth) || $deltaX * 2 > itemWidth ?
+        index ? deltaX > 0 ? itemWidth : 0 : deltaX < 0 ? -itemWidth : 0 : 0 : 0
       that.vStatus  = 0;
       that.scrollTo(that.scrollX + deltaX, 300);
     },
@@ -74,7 +76,7 @@ export default {
       time ? setTimeout(() => {
         that.isLoop && this.setTranslate(scrollX = scrollX >= 0 ? maxX + itemWidth : scrollX <= maxX ? -itemWidth : scrollX, 0);
         that.vStatus = 2, that.scrollX = scrollX, that.indicatorClass();
-      }, time) : that.indicatorClass();
+      }, time + 16.67) : that.indicatorClass();
     },
     setTranslate(x, time) {
       const { _body }                      = this.$refs;

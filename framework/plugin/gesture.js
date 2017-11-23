@@ -92,8 +92,11 @@
     return addAction('gestures', gesture);
   }
 
-  var session = {}, targetIds = {}, slice = [].slice,
-      CAL_INTERVAL                        = 25, IDENTIFIER       = 'identifier';
+  var session      = {},
+      targetIds    = {},
+      slice        = [].slice,
+      CAL_INTERVAL = 25,
+      IDENTIFIER   = 'identifier';
 
   function getMultiCenter(touches) {
     var touchesLength   = touches.length,

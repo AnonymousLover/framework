@@ -7,8 +7,7 @@ import { extend, noop } from '../../util/util'
 
 [
   vKeyboardSimple,
-  vKeyboardComplex,
-  vKeyboardModal
+  vKeyboardComplex
 ].forEach(component => {
   component.install = Vue => Vue.component(component.name, component);
 });

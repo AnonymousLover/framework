@@ -12,11 +12,8 @@ body {
   margin: 0;
   padding: 0;
   outline: 0;
+  user-select: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  
-  &:not(input,textarea,button,select) {
-    user-select: none;
-  }
   
   &::-webkit-scrollbar {
     height: 0;
@@ -29,6 +26,30 @@ body {
   position: relative;
   line-height: 1.5;
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  
+  &::before {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 0;
+    z-index: 99999;
+    content: '';
+    opacity: 0;
+    transition: width 2s cubic-bezier(.2, .8, .9, 1);
+    background-color: #0087FF;
+  }
+  &.transition {
+    &::before {
+      width: 85%;
+      opacity: 1;
+    }
+    
+    &.on:before {
+      width: 100%;
+      transition: width .3s ease-in;
+    }
+  }
 }
 
 ul,
@@ -73,8 +94,15 @@ a {
   text-decoration: none;
 }
 
+input,
+textarea,
+select {
+  user-select: text;
+}
+
 button,
 input,
+textarea,
 select,
 input[type=number]::-webkit-inner-spin-button,
 input[type=search]::-webkit-search-cancel-button {

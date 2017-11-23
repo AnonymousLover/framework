@@ -1,6 +1,5 @@
 <template>
-  <div class="loading-container"
-       :class="[ typeClazz ]">
+  <div class="loading-container" :class="[ clz ]">
     <slot/>
   </div>
 </template>

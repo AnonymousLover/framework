@@ -1,9 +1,7 @@
 //
 export default {
-    props: {
-        value : {
-            default: ''
-        },
-        submit: ''
-    }
+  props: {
+    value : '',
+    submit: { default: () => {} }
+  }
 }

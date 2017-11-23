@@ -1,5 +1,7 @@
 import { isFunction, isNull } from '../../../util/util'
 
+import defaultProps from '../defaultProps'
+
 import vFilter from '../filter/filter.vue'
 
 export const $watch = (list, filterList, selectMap) => {
@@ -22,8 +24,8 @@ export const $watch = (list, filterList, selectMap) => {
 export default {
   components: { vFilter },
   props     : {
-    filterMap: { default: [] },
-    change   : Function
+    filterMap: defaultProps.array,
+    change   : defaultProps.func
   },
   data() {
     return {
@@ -32,9 +34,7 @@ export default {
     }
   },
   computed  : {
-    typeClass() {
-      return this.list.length > 1 ? 'lf' : 'tp';
-    }
+    clz() { return this.list.length > 1 ? 'lf' : 'tp' }
   },
   methods   : {
     _commit(idx) {

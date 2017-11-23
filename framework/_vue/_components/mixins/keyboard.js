@@ -33,7 +33,6 @@ export default {
           value.push(char);
       }
       if (maxLen !== null && maxLen !== undefined) {
-        //value.length >= maxLen && $keyboard.hide();//收起键盘
         value.length > maxLen && value.splice(maxLen);
       }
       that.value = value.join('');

@@ -1,5 +1,5 @@
 <template>
-  <div class="key-body complex" :class="[ typeClazz ]">
+  <div class="key-body complex" :class="[ clz ]">
     <slot/><!-- 内嵌插槽--组合组件  -->
     <h5><i/>安全键盘</h5>
     <ul v-for="(b,i) in boardKey" :key="i" :class="'line_'+i" @tap="_tap">
@@ -9,18 +9,19 @@
 </template>
 <script type="text/babel">
   import '../../../less/keyboard.less'
+  import defaultProps from '../defaultProps'
 
   export default {
     props   : {
-      type : { default: 'lower' },
-      click: Function
+      type : defaultProps.setValue('lower'),
+      click: defaultProps.func
     },
     data() {
       let boardType = this.type;
       return { boardKey: this.buildKeys(boardType), boardType }
     },
     computed: {
-      typeClazz() {
+      clz() {
         switch (this.boardType) {
           case 'upper':
             return 'upper-letter';      //大写

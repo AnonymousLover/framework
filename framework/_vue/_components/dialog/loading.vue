@@ -10,12 +10,13 @@
 </template>
 <script type="text/babel">
   import _modal from '../mixins/modal'
+  import defaultProps from '../defaultProps'
 
   export default {
     mixins: [_modal],
     props : {
-      text : { default: '' },
-      toast: { default: false }
+      text : defaultProps.string,
+      toast: defaultProps.bool
     }
   }
 </script>

@@ -15,21 +15,21 @@
   </div>
 </template>
 <script type="text/babel">
-
   import '../../../less/form.less'
+  import defaultProps from '../defaultProps'
 
   export default {
     props   : {
-      label      : '',
-      type       : { default: 'text' },
-      name       : '',
-      value      : '',
-      maxLength  : '',
-      require    : { default: false },
-      readonly   : { default: false },
-      placeholder: '',
-      validate   : '',
-      click      : ''
+      label      : defaultProps.string,
+      type       : defaultProps.setValue('text'),
+      name       : defaultProps.string,
+      value      : defaultProps.string,
+      maxLength  : defaultProps.string,
+      require    : defaultProps.bool,
+      readonly   : defaultProps.bool,
+      placeholder: defaultProps.string,
+      validate   : defaultProps.func,
+      click      : defaultProps.func
     },
     data() {
       return {
@@ -47,7 +47,7 @@
         this.showFocus = isFocus;
       },
       clear() { this.inputValue = ''},
-      inputTap() { this.readonly && this.click && this.click() }
+      inputTap() { this.readonly && this.click() }
     },
     computed: {
       typeClass() {
