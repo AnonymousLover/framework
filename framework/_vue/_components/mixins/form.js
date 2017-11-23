@@ -37,8 +37,7 @@ export default {
       return this.vMapEach(), error;
     },
     vMapEach(isInit) {
-      let invalid = null,
-          vMap    = this.vMap;
+      let invalid = null, vMap = this.vMap;
       for (let name in vMap) {
         if (invalid === false) break;
         invalid = vMap[name]

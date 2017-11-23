@@ -8,8 +8,6 @@ import vCarouselBanner from '../_components/carousel/carousel.banner.vue'
   component.install = Vue => Vue.component(component.name, component);
 });
 
-export default vCarouselBanner;
-
 export {
   vCarousel,
   vCarouselBanner

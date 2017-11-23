@@ -9,7 +9,7 @@ export default {
   props     : {
     type     : defaultProps.setValue('simple'),
     hasChange: defaultProps.setValue(true),
-    forget   : defaultProps.func
+    forget   : ''
   },
   computed  : {
     _hasForget() {
@@ -17,12 +17,9 @@ export default {
     }
   },
   methods   : {
-    checkType(val) {
-      return (val || this.show) === 'simple'
-    },
     change() {
-      this.value = '';
-      this.show  = this.checkType() ? 'complex' : 'simple';
+      this.password = { value: '' };
+      this.simple   = !this.simple;
     }
   }
 }
