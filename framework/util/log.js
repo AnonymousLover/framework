@@ -35,7 +35,7 @@ export default {
   error: consoleLog('error'),
   debug: (function () {
     let fn = consoleLog(util.isBrowser ? 'debug' : 'log');
-    return () => { debug && fn.apply(null, arguments) };
+    return function () { debug && fn.apply(null, arguments) }
   }()),
   debugEnabled(flag) {
     return flag = null ? debug : debug = !!flag;

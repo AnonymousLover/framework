@@ -2,12 +2,15 @@
  * Created by h5 on 2017/8/11.
  */
 import '../../../less/carousel.less'
+import defaultProps from '../defaultProps'
 
 export default {
+  props  : { slider: defaultProps.func },
   data() {
     this.maxX = this.scrollX = this.itemWidth = ~~(this._timeout = false);
     return {
       itemList: [],   //带自动轮播
+      active  : 0,    // 当前活跃的active
       vStatus : 0    //当前状态。。0代表锁定状态。1代表滑动状态。2代表自由状态
     }
   },
@@ -21,7 +24,8 @@ export default {
           that.vStatus = 0;
           that.scrollTo(that.scrollX - that.itemWidth, 350);
         }, ~~that.auto) : null;
-    }
+    },
+    active(val) { this.slider(val) }
   },
   methods: {
     _tick() {
@@ -64,7 +68,7 @@ export default {
           speed     = $deltaX / detail.deltaTime,
           itemWidth = that.itemWidth;
       const index   = ['left', 'right'].indexOf(direction); // -1 0 1
-      deltaX        = index !== -1 ? (speed > .35 && $deltaX * 4 > itemWidth) || $deltaX * 2 > itemWidth ?
+      deltaX        = index !== -1 ? (speed > .8 && $deltaX * 4 > itemWidth) || $deltaX * 2 > itemWidth ?
         index ? deltaX > 0 ? itemWidth : 0 : deltaX < 0 ? -itemWidth : 0 : 0 : 0
       that.vStatus  = 0;
       that.scrollTo(that.scrollX + deltaX, 300);
@@ -74,9 +78,10 @@ export default {
       const { itemWidth, maxX } = that;
       that.setTranslate(scrollX = scrollX > 0 ? 0 : scrollX < maxX ? maxX : scrollX, time);
       time ? setTimeout(() => {
-        that.isLoop && this.setTranslate(scrollX = scrollX >= 0 ? maxX + itemWidth : scrollX <= maxX ? -itemWidth : scrollX, 0);
+        that.isLoop && this.setTranslate(scrollX = scrollX >= 0 ? maxX + itemWidth
+          : scrollX <= maxX ? -itemWidth : scrollX, 0);
         that.vStatus = 2, that.scrollX = scrollX, that.indicatorClass();
-      }, time + 16.67) : that.indicatorClass();
+      }, time + 16.6666) : that.indicatorClass();
     },
     setTranslate(x, time) {
       const { _body }                      = this.$refs;
@@ -85,11 +90,10 @@ export default {
     },
     indicatorClass() {
       let index    = Math.abs(this.scrollX / this.itemWidth),
-          children = this.$refs._indicator.children || [],
-          addActive;
+          children = this.$refs._indicator.children || [];
+      this.active  = this.isLoop ? index - 1 : index;
       for (let i = 0, ii = children.length; i < ii; i++) {
-        addActive = this.isLoop ? i + 1 === index : i === index;
-        children[i].classList[addActive ? 'add' : 'remove']('active');
+        children[i].classList[this.active === i ? 'add' : 'remove']('active');
       }
     }
   }

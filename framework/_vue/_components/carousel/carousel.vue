@@ -3,8 +3,8 @@
     <div class="carousel-body" ref="_body" @drag="_drag" @dragend="_dragEnd">
       <slot/>
     </div>
-    <ol class="carousel-indicator" ref="_indicator">
-      <li class="indicator" v-for="(slot,i) in $slots.default" :key="i"/>
+    <ol class="indicator" ref="_indicator">
+      <li v-for="(slot,i) in $slots.default" :key="i"/>
     </ol>
   </div>
 </template>

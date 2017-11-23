@@ -5,8 +5,8 @@
         <img :src="b.src"/>
       </div>
     </div>
-    <ol class="carousel-indicator" ref="_indicator">
-      <li class="indicator" v-for="(b,i) in items" :key="i"/>
+    <ol class="indicator" ref="_indicator">
+      <li v-for="(b,i) in items" :key="i"/>
     </ol>
   </div>
 </template>
