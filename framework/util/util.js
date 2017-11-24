@@ -249,6 +249,19 @@ export function debounce(fn, delay) {
   }
 }
 
+// 节流
+export function throttle(fn, delay) {
+  let timer = null
+  return function (...args) {
+    if (!timer) {
+      timer = setTimeout(() => {
+        fn.apply(this, args)
+        timer = null
+      }, delay)
+    }
+  }
+}
+
 /*
  * element area
  */
@@ -272,6 +285,12 @@ export function toggleClass(el, clazz, isAdd) {
     });
     el.className = odClazz.join(' ');
   })(isArray(clazz) ? clazz : clazz.split(' '));
+}
+
+export function trigger(element, eventType, eventData) {
+  isBrowser && element.dispatchEvent(
+    new CustomEvent(eventType, { detail: eventData, bubbles: true, cancelable: true })
+  )
 }
 
 export const $body = {

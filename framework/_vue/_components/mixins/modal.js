@@ -19,7 +19,6 @@ export default {
   },
   watch     : {
     showModal(val) {
-      // false外发...
       val || this.$emit('update:showModal', val);
     }
   }

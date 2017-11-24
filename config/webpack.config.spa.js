@@ -21,7 +21,10 @@ module.exports = opts => {
         path.join(rootPath, 'framework/adaptive.js'),
         path.join(rootPath, 'framework/base.js'),
       ],
-      plugin: path.join(rootPath, 'framework/plugin.js'),      // 插件级 JS
+      plugin: [
+        path.join(rootPath, 'framework/plugin/gesture.js'),      // 手势 JS
+        path.join(rootPath, 'framework/plugin/scroll.js'),      // scroll JS
+      ]
     },
     // 模块加载器规则
     module : {

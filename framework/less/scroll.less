@@ -1,0 +1,17 @@
+
+.scroll-wrapper {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  
+  > .scroll-body {
+    position: absolute;
+    z-index: 1;
+    min-width: 100%;
+    transform: translateZ(0);
+  }
+}
