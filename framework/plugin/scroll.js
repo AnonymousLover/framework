@@ -200,7 +200,6 @@
           options         = self.options;
       self.isInTransition = false;
       if (self.resetPosition(options.bounceTime)) return;
-      self.scrollTo(newX, newY);
       var time       = 0, easing,
           _x         = self.x,
           _y         = self.y,

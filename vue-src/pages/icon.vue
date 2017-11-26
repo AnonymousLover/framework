@@ -1,15 +1,21 @@
 <template>
-  <ul class="row font-page">
-    <li class="col-4" v-for="icon in icons" :key="icon.keyCode">
-      <i class="icon-font" :class="icon.className"/>
-      <p v-html="icon.className"/>
-      编码:{{getCode(icon.keyCode)}}
-    </li>
-  </ul>
+  <v-scroll>
+    <ul class="row font-page">
+      <li class="col-4" v-for="icon in icons" :key="icon.keyCode">
+        <i class="icon-font" :class="icon.className"/>
+        <p v-html="icon.className"/>
+        编码:{{getCode(icon.keyCode)}}
+      </li>
+    </ul>
+  </v-scroll>
 </template>
 <script type="text/babel">
+  import { vScroll } from '../../framework/_vue/components/scroll'
 
   export default {
+    components: {
+      vScroll
+    },
     methods: {
       getCode(code) {
         return '&#xe' + code;

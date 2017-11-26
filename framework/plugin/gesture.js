@@ -25,7 +25,7 @@
   }
 
   function trigger(element, eventType, eventData) {
-    element.dispatchEvent(new CustomEvent(eventType, {
+    element && element.dispatchEvent(new CustomEvent(eventType, {
       detail: eventData, bubbles: true, cancelable: true
     }));
   }
@@ -55,33 +55,8 @@
     return Math.sqrt(x * x + y * y);
   }
 
-  function getScale(starts, moves) {
-    if (starts.length >= 2 && moves.length >= 2) {
-      var props = ['pageX', 'pageY'];
-      return getDistance(moves[1], moves[0], props) /
-        getDistance(starts[1], starts[0], props);
-    }
-    return 1;
-  }
-
-  function getAngle(p1, p2, props) {
-    props = props || ['x', 'y'];
-    var x = p2[props[0]] - p1[props[0]],
-        y = p2[props[1]] - p1[props[1]];
-    return Math.atan2(y, x) * 180 / Math.PI;
-  }
-
   function getDirection(x, y) {
     return x === y ? '' : ABS(x) >= ABS(y) ? x > 0 ? 'left' : 'right' : y > 0 ? 'up' : 'down';
-  }
-
-  function getRotation(start, end) {
-    var props = ['pageX', 'pageY'];
-    return getAngle(end[1], end[0], props) - getAngle(start[1], start[0], props);
-  }
-
-  function getVelocity(deltaTime, x, y) {
-    return { x: x / deltaTime || 0, y: y / deltaTime || 0 };
   }
 
   var getNow = Date.now || function () {
@@ -152,58 +127,39 @@
   }
 
   function calTouchData(touch) {
-    var touches       = touch.touches,
-        touchesLength = touches.length;
+    var touches = touch.touches;
     if (!session.firstTouch) {
       session.firstTouch = copySimpleTouchData(touch);
     }
-    if (touchesLength === 1) {
-      session.firstMultiTouch = false;
-    }
-    var firstTouch      = session.firstTouch,
-        firstMultiTouch = session.firstMultiTouch,
-        offsetCenter    = firstMultiTouch ? firstMultiTouch.center : firstTouch.center,
-        center          = touch.center = getMultiCenter(touches);
+    var firstTouch   = session.firstTouch,
+        offsetCenter = firstTouch.center,
+        center       = touch.center = getMultiCenter(touches);
     touch.timestamp = getNow();
     touch.deltaTime = touch.timestamp - firstTouch.timestamp;
-    touch.angle     = getAngle(offsetCenter, center);
     touch.distance  = getDistance(offsetCenter, center);
     calDelta(touch);
-    touch.offsetDirection = getDirection(touch.deltaX, touch.deltaY);
-    touch.scale           = firstMultiTouch ? getScale(firstMultiTouch.touches, touches) : 1;
-    touch.rotation        = firstMultiTouch ? getRotation(firstMultiTouch.touches, touches) : 0;
     calIntervalTouchData(touch);
   }
 
   function calIntervalTouchData(touch) {
     var last      = session.lastInterval || touch,
-        deltaTime = touch.timestamp - last.timestamp,
-        velocity, velocityX, velocityY, direction;
+        deltaTime = touch.timestamp - last.timestamp, direction
+    // velocity, velocityX, velocityY, direction;
     if (touch.gesture.type != EVENT_CANCEL && (deltaTime > CAL_INTERVAL ||
         last.velocity === undefined)) {
       var deltaX           = last.deltaX - touch.deltaX,
-          deltaY           = last.deltaY - touch.deltaY,
-          v                = getVelocity(deltaTime, deltaX, deltaY);
-      velocityX            = v.x;
-      velocityY            = v.y;
-      velocity             = ABS(v.x) > ABS(v.y) ? v.x : v.y;
+          deltaY           = last.deltaY - touch.deltaY
       direction            = getDirection(deltaX, deltaY) || last.direction;
       session.lastInterval = touch;
     } else {
-      velocity  = last.velocity;
-      velocityX = last.velocityX;
-      velocityY = last.velocityY;
       direction = last.direction;
     }
-    touch.velocity  = velocity;
-    touch.velocityX = velocityX;
-    touch.velocityY = velocityY;
     touch.direction = direction;
   }
 
   function hasParent(node, parent) {
     while (node) {
-      if (node == parent)
+      if (node === parent)
         return true;
       node = node.parentNode;
     }
@@ -249,10 +205,7 @@
       targetTouches      = allTouches.filter(function (touch) {
         return hasParent(touch.target, sessionTarget);
       });
-      type == EVENT_START && each(targetTouches,
-        function (i, tt) {
-          targetIds[tt[IDENTIFIER]] = true;
-        });
+      type === EVENT_START && each(targetTouches, function (i, tt) { targetIds[tt[IDENTIFIER]] = true });
       each(changedTouches, function (i, ct) {
         var id = ct[IDENTIFIER];
         targetIds[id] && changedTargetTouches.push(ct);
@@ -267,9 +220,7 @@
         changedTouchesLength = changedTargetTouches.length;
     if (type === EVENT_START && touchesLength === changedTouchesLength) { //first
       touch.isFirst = true;
-      each(session, function (key) {
-        delete session[key];
-      }, true);
+      each(session, function (key) { delete session[key] }, true);
       session.target = event.target;
     }
     touch.isFinal        = ((type === EVENT_END || type === EVENT_CANCEL) && touchesLength - changedTouchesLength === 0);
@@ -291,48 +242,10 @@
     }, true);
   };
   window.addEventListener(EVENT_START, handleTouchEvent);
-  //window.addEventListener(EVENT_MOVE, function (event) {
-  //    //var target = event.target;
-  //    //if (/^(SELECT|INPUT|TEXTAREA)$/i.test(target.tagName)
-  //    //    && !target.disabled && !target.readOnly) return;
-  //    event.preventDefault();
-  //}, true);
   window.addEventListener(EVENT_MOVE, handleTouchEvent);
   window.addEventListener(EVENT_END, handleTouchEvent);
   window.addEventListener(EVENT_CANCEL, handleTouchEvent);
 
-  //flick[left|right|up|down]
-  (function (name) {
-    var flickStartTime   = 0,
-        flickMaxTime     = 200,
-        flickMinDistance = 10;
-    var handle           = function (event, touch) {
-      var now               = getNow(),
-          target, flickTime = now - flickStartTime;
-      switch (event.type) {
-        case EVENT_MOVE:
-          if (flickTime > 300) {
-            flickStartTime     = now;
-            session.flickStart = touch.center;
-          }
-          break;
-        case EVENT_END:
-        case EVENT_CANCEL:
-          touch.flick = false;
-          if (session.flickStart && flickMaxTime > flickTime &&
-            touch.distance > flickMinDistance) {
-            touch.flick     = true;
-            touch.flickTime = flickTime;
-            touch.flickX    = touch.center.x - session.flickStart.x;
-            touch.flickY    = touch.center.y - session.flickStart.y;
-            target          = session.target;
-            trigger(target, name, touch);
-            trigger(target, name + touch.direction, touch);
-          }
-      }
-    };
-    addGesture({ name: name, index: 5, handle: handle })
-  })('flick');
   //swipe[left|right|up|down]
   (function (name) {
     var swipeMaxTime     = 300,
@@ -379,11 +292,11 @@
     };
     addGesture({ name: name, index: 20, handle: handle })
   })('drag');
-  //gesture tap and doubleTap
+  //gesture tap
   (function (name) {
     var lastTarget, lastTapTime,
         tapMaxInterval = 200,
-        tapMaxDistance = 20,
+        tapMaxDistance = 25,
         tapMaxTime     = 250;
     var handle         = function (event, touch) {
       var target;
@@ -455,8 +368,9 @@
   }
 
   function parseTranslateMatrix(translateString, position) {
-    var matrix                             = translateString.match(translateMatrixRE),
-        is3D = matrix && matrix[1], result = {};
+    var matrix = translateString.match(translateMatrixRE),
+        is3D   = matrix && matrix[1],
+        result = {};
     if (matrix) {
       matrix = matrix[2].split(",");
       matrix = is3D === "3d" ? matrix.slice(12, 15) :

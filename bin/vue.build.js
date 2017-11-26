@@ -28,6 +28,7 @@ const compilerCallback = (err, stats) => {
     console.log(stats.compilation.errors[0].message)
   }
 }
+process.env.NODE_ENV   = 'production'
 
 // 执行建构
 if (isProd) {
