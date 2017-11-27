@@ -7,11 +7,12 @@ module.exports = {
       NODE_ENV: '"production"'
     },
     deployPath: path.resolve(rootPath, 'deployed/'),
-    publicPath: 'http://30.55.160.49:20004/'
+    publicPath: 'http://127.0.0.1:20004/'
   },
   dev : {
     env            : {
-      NODE_ENV: '"development"'
+      NODE_ENV: '"development"',
+      PATH    : "''"
     },
     gZip           : true,
     autoOpenBrowser: true,
@@ -19,6 +20,6 @@ module.exports = {
     devtool        : '#source-map',
     isHotReload    : true,
     deployPath     : path.join(rootPath, 'deployed/'),
-    publicPath     : 'http://30.55.160.49:20004/'
+    publicPath     : 'http://127.0.0.1:20004/'
   }
 };

@@ -4,7 +4,10 @@ import vPop from '../_components/container/pop.vue'
 import vModal from '../_components/container/modal.vue'
 import vLoad from '../_components/container/load.vue'
 
-import { createElement, $body, sliceArgs, extend } from '../../util/util'
+import { el, base } from '../../util'
+
+const { $body, $el }    = el;
+const { toArr, extend } = base;
 
 [
   vPop,
@@ -31,7 +34,7 @@ export const $modal = {
   show(component, _opts, closefn) {
     for (let prop in _opts) {
       if (_opts.hasOwnProperty(prop)) {
-        component[prop] = prop == 'click' ?
+        component[prop] = prop === 'click' ?
           this.hide.bind(this, _opts[prop]) :
           _opts[prop];
       }
@@ -49,7 +52,7 @@ export const $modal = {
    * 私有方法 -- 不建议外部使用
    */
   _append(component, closefn) {
-    this._el || $body.append(this._el = createElement('div'));//建立容器
+    this._el || $body.append(this._el = $el.create('div'));//建立容器
     this._component = component.$mount(this._el);
     component.$off();
     component.$on('update:showModal',
@@ -66,7 +69,7 @@ export const $modal = {
     let noClose = args2 === true;
     noClose || this._component && (this._component.showModal = false);
     setTimeout(() => {
-      callback && callback.apply(null, sliceArgs(arguments, noClose ? 2 : 1))
+      callback && callback.apply(null, toArr(arguments, noClose ? 2 : 1))
     }, noClose ? 0 : 300)
   }
 };
@@ -80,7 +83,7 @@ export const $load = extend({
 }, $modal, {
   _append(component) {
     this._timer && clearTimeout(this._timer);
-    this._el || $body.append(this._el = createElement('div'));//建立容器
+    this._el || $body.append(this._el = $el.create('div'));//建立容器
     this._component = component.$mount(this._el);
     Vue.nextTick(() => this._component.showModal = true);
     this._timer = setTimeout(() => this.hide(this._component.callback), this._component.delay || 10000);
@@ -88,7 +91,7 @@ export const $load = extend({
   hide(callback) {
     this._timer && clearTimeout(this._timer), this._timer = null;
     this._component && (this._component.showModal = false);
-    callback && callback.apply(null, sliceArgs(arguments, 1))
+    callback && callback.apply(null, toArr(arguments, 1))
   },
   delay: 300
 });

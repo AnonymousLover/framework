@@ -1,7 +1,9 @@
 //
 import '../../../less/dialog.less'
 import defaultProps from '../defaultProps'
-import { debounce, $backdrop } from '../../../util/util'
+import { el, base } from '../../../util'
+
+const { $backdrop } = el;
 
 export default {
   props   : {
@@ -12,7 +14,7 @@ export default {
     return { show: !1 }
   },
   methods : {
-    display: debounce(function (val) { this.show = !!val }, 16.7)
+    display: base.debounce(function (val) { this.show = !!val }, 16.7)
   },
   computed: {
     clz() { return this.show ? 'active' : '' }

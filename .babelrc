@@ -1,8 +1,10 @@
 {
-    "presets": [
-        "env",
-        "react"
-    ],
-    "plugins": [
-    ]
+  "presets": [
+    "env",
+    "stage-0",
+    "react"
+  ],
+  "plugins": [
+    "babel-plugin-inferno"
+  ]
 }

@@ -1,7 +1,7 @@
 /**
  * Created by h5 on 2017/9/4.
  */
-import { isBrowser, toJson, fromJson, forEach } from './util'
+import base, { browser } from './base'
 import $log from './log'
 
 let _timeKey   = '_time_key_sort_list_',
@@ -10,21 +10,21 @@ let _timeKey   = '_time_key_sort_list_',
     _timer     = null;  //定时器句柄
 
 function Storage() {
-  if (!isBrowser) return;
+  if (!browser) return;
   try {
     let keys = Object.keys(localStorage) || [],
         _value, value;
     keys.forEach(key => {
       try {
         _value = localStorage[key];
-        value  = fromJson(_value);
+        value  = base.fromJson(_value);
       } catch (e) {
         value = _value;
       }
       key === _timeKey ? _timeValue = value :
         _data[key] = value;
     });
-    isBrowser && this._save();
+    this._save();
   } catch (e) {
     $log.error(e);
     _data = {};
@@ -39,11 +39,9 @@ Storage.prototype = {
     } else {
       delete _timeValue[key];
     }
-    isBrowser && this._save();
+    browser && this._save();
   },
-  get(key) {
-    return key ? _data[key] : _data;
-  },
+  get(key) { return key ? _data[key] : _data },
   _save() {
     _timer && clearTimeout(_timer);
     _timer      = null;
@@ -60,10 +58,10 @@ Storage.prototype = {
         minTime = minTime === 0 ? _value : Math.min(_value, minTime);
       }
     });
-    forEach(_data, function (value, key) {
-      localStorage.setItem(key, toJson(value));
+    base.each(_data, function (value, key) {
+      localStorage.setItem(key, base.toJson(value));
     });
-    localStorage.setItem(_timeKey, toJson(_timeValue));
+    localStorage.setItem(_timeKey, base.toJson(_timeValue));
     //倒计时
     _timer = minTime > 0 ? setTimeout(() => this._save(), +(minTime - nowTime)) : null;
   }

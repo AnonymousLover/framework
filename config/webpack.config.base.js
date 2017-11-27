@@ -1,5 +1,5 @@
 const webpack              = require('webpack');
-const PreloadWebpackPlugin = require('preload-webpack-plugin');
+// const PreloadWebpackPlugin = require('preload-webpack-plugin');
 
 //postcss
 const px2rem       = require('postcss-pxtorem');

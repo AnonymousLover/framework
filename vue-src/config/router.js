@@ -1,6 +1,6 @@
 import VueRouter from 'vue-router'
 
-import { routeConfig } from '../../framework/util/util'
+import { vueConfig } from '../../framework/util'
 
 const routes = [
   require('../routers/indexRouter').default,
@@ -11,4 +11,4 @@ const routes = [
   require('../routers/carouselRouter').default,
 ]
 
-export default routeConfig(new VueRouter({ routes }));
+export default vueConfig(new VueRouter({ routes }));

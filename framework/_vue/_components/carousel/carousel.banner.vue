@@ -13,7 +13,10 @@
 <script type="text/babel">
   import carouselMixins from '../mixins/carousel'
   import defaultProps from '../defaultProps'
-  import { $$raf, extend } from '../../../util/util'
+
+  import { el, base } from '../../../util'
+
+  const { extend } = base;
 
   export default {
     mixins : [carouselMixins],
@@ -29,7 +32,7 @@
       isLoop() { this.initialize() },
       auto() {
         this.vStatus = 0;
-        $$raf(() => this.vStatus = 2);
+        el.$raf(() => this.vStatus = 2);
       }
     },
     methods: {

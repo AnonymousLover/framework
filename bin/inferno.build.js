@@ -3,13 +3,13 @@ const path             = require('path')
 const rootPath         = path.resolve(__dirname, '../');
 // 命令行参数
 const argvs            = require('minimist')(process.argv.slice(2));
-const appName          = argvs['app-name'] || 'vue-src';
+const appName          = argvs['app-name'] || 'inferno-src';
 const currEnvName      = argvs.env || 'production';
 // 定义配置相关
 const isProd           = (process.env.NODE_ENV === 'production');
 // 定义webpack相关
 const webpack          = require('webpack');
-const wpCfg            = require('../config/webpack.vue.js');
+const wpCfg            = require('../config/webpack.inferno.js');
 const compiler         = webpack(wpCfg({ appName, currEnvName }));
 const compilerCallback = (err, stats) => {
   if (err === null && stats.compilation.errors.length === 0) {

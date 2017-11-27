@@ -3,7 +3,7 @@ import vMsgBox from '../_components/dialog/msgBox.vue'
 import vLoading from '../_components/dialog/loading.vue'
 import vActionSheet from '../_components/dialog/actionSheet.vue'
 import { $pop, $load, $modal } from './container'
-import { valueFn } from '../../util/util'
+import { base } from '../../util'
 
 [
   vMsgBox,
@@ -22,6 +22,8 @@ export {
 const MsgBox      = Vue.extend(vMsgBox),
       Loading     = Vue.extend(vLoading),
       ActionSheet = Vue.extend(vActionSheet);
+
+const { valueFn } = base
 
 let _msgBox, _loading, _actionSheet;
 

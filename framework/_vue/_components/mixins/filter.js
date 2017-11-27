@@ -1,8 +1,9 @@
-import { isFunction, isNull } from '../../../util/util'
-
+import { base } from '../../../util'
 import defaultProps from '../defaultProps'
 
 import vFilter from '../filter/filter.vue'
+
+const { isNull } = base
 
 export const $watch = (list, filterList, selectMap) => {
   let len     = filterList.length,
@@ -39,7 +40,7 @@ export default {
   methods   : {
     _commit(idx) {
       this.$nextTick(() => {
-        isFunction(this.change) && idx + 1 === this.list.length && this.change(this.select)
+        idx + 1 === this.list.length && this.change(this.select)
       })
     }
   },

@@ -3,7 +3,7 @@ import vKeyboardModal from '../_components/keyboard/keyboard.modal.vue'
 import vKeyboardSimple from '../_components/keyboard/keyboard.simple.vue'
 import vKeyboardComplex from '../_components/keyboard/keyboard.complex.vue'
 import { $modal } from './container'
-import { extend, noop } from '../../util/util'
+import { base } from '../../util'
 
 [
   vKeyboardSimple,
@@ -32,10 +32,10 @@ export default {
     if (!_keyboard || _keyboard._isDestroyed) {
       _keyboard = new ModalKeyboard();
     }
-    let click = _opts.click || noop;
-    $modal.show(_keyboard, extend(_opts, {
+    let click = _opts.click || base.NO_OP;
+    $modal.show(_keyboard, base.extend(_opts, {
       click: char => {
-        char == 'hide' ? this.hide() : click(char);
+        char === 'hide' ? this.hide() : click(char);
       }
     }), () => click(false));
   },

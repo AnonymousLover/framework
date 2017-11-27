@@ -1,30 +1,34 @@
-import * as util from './util';
+import base from './base';
 import $log from './log'
 
-let caches = {};
+const caches = {}
 
-const $cacheFactory = function (cacheId, options) {
+const { extend } = base
+
+const $cache = (cacheId, options) => {
   if (cacheId in caches)
     return $log.error('iid', cacheId + ' is in!');
   let MAX_VALUE = Number.MAX_VALUE,
       size      = 0,
-      stats     = util.extend({}, options, { id: cacheId }),
+      stats     = extend({}, options, { id: cacheId }),
       data      = {},
       capacity  = (options && options.capacity) || MAX_VALUE,
       lruHash   = {},
       freshEnd  = null,
       staleEnd  = null;
   return caches[cacheId] = {
-    put      : function (key, value) {
-      capacity < MAX_VALUE &&
-      refresh(lruHash[key] || (lruHash[key] = { key }));
-      if (util.isUndefined(value)) return;
-      key in data || size++;
-      data[key] = value;
-      size > capacity && this.remove(staleEnd.key);
+    put    : function (key, value) {
+      if (capacity < MAX_VALUE) {
+        refresh(lruHash[key] || (lruHash[key] = { key }))
+      }
+      if (base.isDef(value)) {
+        key in data || size++
+        data[key] = value;
+        size > capacity && this.remove(staleEnd.key);
+      }
       return value;
     },
-    get      : function (key) {
+    get    : function (key) {
       if (capacity < MAX_VALUE) {
         let lruEntry = lruHash[key];
         if (!lruEntry) return;
@@ -32,7 +36,7 @@ const $cacheFactory = function (cacheId, options) {
       }
       return data[key];
     },
-    remove   : function (key) {
+    remove : function (key) {
       if (capacity < MAX_VALUE) {
         let lruEntry = lruHash[key];
         if (!lruEntry) return;
@@ -44,18 +48,18 @@ const $cacheFactory = function (cacheId, options) {
       delete data[key];
       size--;
     },
-    removeAll: function () {
+    clear  : function () {
       data     = {};
       size     = 0;
       lruHash  = {};
       freshEnd = staleEnd = null;
     },
-    destroy  : function () {
+    destroy: function () {
       data = stats = lruHash = null;
       delete caches[cacheId];
     },
-    info     : function () {
-      return util.extend({}, stats, { size });
+    info   : function () {
+      return extend({}, stats, { size });
     }
   };
 
@@ -77,16 +81,12 @@ const $cacheFactory = function (cacheId, options) {
   }
 };
 
-$cacheFactory.info = function () {
-  let info = {};
-  for (let name in caches) {
-    info[name] = caches[name].info();
-  }
+$cache.info = () => {
+  let info = {}
+  base.each(caches, (val, key) => { info[key] = val.info() })
   return info;
-};
+}
 
-$cacheFactory.get = function (cacheId) {
-  return caches[cacheId];
-};
+$cache.get = (cacheId) => caches[cacheId]
 
-export default $cacheFactory;
+export default $cache

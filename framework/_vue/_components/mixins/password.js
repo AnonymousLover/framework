@@ -1,7 +1,9 @@
 //
+import defaultProps from '../defaultProps'
+
 export default {
   props: {
-    value : '',
-    submit: { default: () => {} }
+    value : defaultProps.string,
+    submit: defaultProps.func
   }
 }
