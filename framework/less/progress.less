@@ -1,0 +1,34 @@
+// 线性进度条
+
+.progress-line {
+  background-color: #e4e8f1;
+  position: relative;
+  border-radius: 100PX;
+  overflow: hidden;
+  
+  .line-inner {
+    transition: width;
+    height: 14px
+  }
+}
+
+// 圆形进度条
+.progress-circle {
+  display: inline-block;
+  position: relative;
+  
+  svg {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .circle-text {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    text-align: center;
+    width: 100%;
+    transform: translateY(-50%);
+    font-size: 30px;
+  }
+}

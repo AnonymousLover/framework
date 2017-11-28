@@ -146,6 +146,16 @@ function throttle(fn, delay) {
   }
 }
 
+function toFixed(number, len) {
+  number = (Number(number).toFixed(len) + '');
+  return len ? number.replace(/0*$/g, '').replace(/\.*$/g, '') : number
+}
+
+function easeOut(t, b, c, d, f) {
+  let t1 = t / d - 1;
+  return toFixed(c * (t1 * t1 * t1 + 1) + b, f ? 1 : 0);
+}
+
 export default {
   isWin,
   getType,
@@ -176,7 +186,9 @@ export default {
   toQueryStr,
   buildUrl,
   debounce,
-  throttle
+  throttle,
+  toFixed,
+  easeOut,
 }
 
 

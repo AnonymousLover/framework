@@ -9,6 +9,7 @@ const routes = [
   require('../routers/keyboardRouter').default,
   require('../routers/passwordRouter').default,
   require('../routers/carouselRouter').default,
+  require('../routers/progressRouter').default,
 ]
 
 export default vueConfig(new VueRouter({ routes }));

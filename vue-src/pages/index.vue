@@ -24,6 +24,7 @@
           { url: 'form', text: 'form表单' },
           { url: 'password', text: '密码组件' },
           { url: 'carousel', text: '轮播组件' },
+          { url: 'progress', text: '进度条' },
         ]
       }
     },
