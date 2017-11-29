@@ -1,5 +1,6 @@
 <template>
   <v-scroll>
+    <v-sticky>吸顶</v-sticky>
     <ul class="item-view">
       <li class="item-list"
           v-for="doc in docList"
@@ -9,11 +10,12 @@
   </v-scroll>
 </template>
 <script type="text/babel">
-  import { vScroll } from '../../framework/_vue/components/scroll'
+  import { vScroll, vSticky } from '../../framework/_vue'
 
   export default {
     components: {
-      vScroll
+      vScroll,
+      vSticky
     },
     data() {
       return {

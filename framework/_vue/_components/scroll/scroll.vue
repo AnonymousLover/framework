@@ -3,6 +3,7 @@
     <div class="scroll-body">
       <slot/>
     </div>
+    <nav class="sticky-wrapper" ref="sticky"/>
   </div>
 </template>
 

@@ -8,7 +8,7 @@
   </div>
 </template>
 <script type="text/babel">
-  import { vPasswordSuite } from '../../framework/_vue/components/password'
+  import { vPasswordSuite } from '../../framework/_vue'
 
   export default {
     components: { vPasswordSuite },

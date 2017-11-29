@@ -10,8 +10,12 @@
   </v-scroll>
 </template>
 <script type="text/babel">
-  import { vScroll } from '../../framework/_vue/components/scroll'
-  import { vProgressCircle, vProgressLine,vProgressNumber } from '../../framework/_vue/components/progress'
+  import {
+    vScroll,
+    vProgressCircle,
+    vProgressLine,
+    vProgressNumber
+  } from '../../framework/_vue'
 
   export default {
     components: {

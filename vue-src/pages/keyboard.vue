@@ -16,10 +16,13 @@
 </template>
 <script type="text/babel">
 
-  import keyboardMixins from '../../framework/_vue/_components/mixins/keyboard'
-  import $keyboard from '../../framework/_vue/components/keyboard'
-  import { vInput, vForm } from '../../framework/_vue/components/form'
-  import $log from '../../framework/util/log'
+  import {
+    vInput, vForm,
+    keyboardMixins,
+    $keyboard
+  } from '../../framework/_vue'
+
+  import { log as $log } from '../../framework/util'
 
   const closeFn = $log.debug.bind($log, '关闭键盘');
 

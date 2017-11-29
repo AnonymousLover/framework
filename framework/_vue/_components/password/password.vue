@@ -6,15 +6,16 @@
 
 <script type="text/babel">
   import '../../../less/password.less'
+  import defaultProps from '../defaultProps'
   import keyboardMixin from '../mixins/keyboard';
   import $keyboard from "../../components/keyboard";
 
   export default {
     mixins : [keyboardMixin],
     props  : {
-      value : { default: '' },
-      length: { default: 6 },
-      click : Function
+      value : defaultProps.string,
+      length: defaultProps.setValue(6),
+      click : defaultProps.func
     },
     data() {
       return { items: [] }

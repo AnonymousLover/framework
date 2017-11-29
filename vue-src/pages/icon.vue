@@ -10,7 +10,7 @@
   </v-scroll>
 </template>
 <script type="text/babel">
-  import { vScroll } from '../../framework/_vue/components/scroll'
+  import { vScroll } from '../../framework/_vue'
 
   export default {
     components: {

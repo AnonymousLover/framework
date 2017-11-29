@@ -5,8 +5,8 @@
 </template>
 <script type="text/babel">
 
-  import $dialog from '../../framework/_vue/components/dialog'
-  import $log from '../../framework/util/log'
+  import { $dialog } from '../../framework/_vue'
+  import { log } from '../../framework/util'
 
   export default {
     data() {
@@ -19,8 +19,8 @@
           { text: 'loading 加载中', click: this.loading.bind(this, '加载中') },
           { text: 'loading', click: this.loading.bind(this, '') },
           { text: 'toast提示', click: this.toast.bind(this, 'toast提示') },
-          { text: 'actionSheet1', click: this.actionSheet.bind(this, ['拍照或录像', '选取现有的'], $log.debug) },
-          { text: 'actionSheet2', click: this.actionSheet.bind(this, ['回复', '转发', '打印'], $log.debug) },
+          { text: 'actionSheet1', click: this.actionSheet.bind(this, ['拍照或录像', '选取现有的'], log.debug) },
+          { text: 'actionSheet2', click: this.actionSheet.bind(this, ['回复', '转发', '打印'], log.debug) },
         ]
       }
     },

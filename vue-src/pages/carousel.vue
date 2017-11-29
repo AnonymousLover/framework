@@ -16,8 +16,7 @@
   </v-scroll>
 </template>
 <script type="text/babel">
-  import { vScroll } from '../../framework/_vue/components/scroll'
-  import { vCarousel, vCarouselBanner } from '../../framework/_vue/components/carousel'
+  import { vScroll,vCarouselBanner,vCarousel } from '../../framework/_vue'
   import $log from '../../framework/util/log'
 
   export default {

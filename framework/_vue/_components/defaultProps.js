@@ -15,5 +15,18 @@ export default {
     }
   }
 };
+// vue 独有的基本方法
+export const $vue = {
+  getParent(vNode, tag) {
+    let $vnode, componentOption;
+    do {
+      $vnode          = vNode.$vnode || {};
+      componentOption = $vnode.componentOptions || {};
+      if (componentOption.tag === tag)
+        return vNode;
+      vNode = vNode.$parent;
+    } while (vNode)
+  }
+}
 
 
