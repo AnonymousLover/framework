@@ -7,10 +7,7 @@ const raf        = requestAnimationFrame || webkitRequestAnimationFrame,
 const $raf = rafSupport ? (fn) => {
   let id = raf(fn);
   return () => { cancelRaf(id) }
-} : (fn) => {
-  let timer = setTimeout(fn, 16.666); // 1000 / 60 = 16.666
-  return () => { clearTimeout(timer) }
-}
+} : base.timeout
 
 $raf.supported = rafSupport;
 
@@ -64,30 +61,40 @@ const $body = {
   }
 }
 
-let dropEl = create('div', { className: 'backdrop-container' }),
-    _stack = 0;
+let dropEl = create('div', {
+  className: 'backdrop-container'
+}), _stack = 0;
 
 browser && $body.append(dropEl);
 
 const $backdrop = {
   retain() {
-    ++_stack && $raf(() => {
-      toggle(dropEl, 'active', true);
-      $body.locked();
-    })
+    ++_stack && $raf(
+      () => {
+        toggle(dropEl, 'active', true);
+        $body.locked();
+      })
   },
   release() {
-    --_stack || $raf(() => {
-      toggle(dropEl, 'active');
-      $body.locked(true)
-    })
+    --_stack || $raf(
+      () => {
+        toggle(dropEl, 'active');
+        $body.locked(true)
+      })
   }
+}
+
+function $style(el, property) {
+  let styles = window.getComputedStyle(el, null);
+  return property ? styles.getPropertyValue(property)
+    || styles[property] : styles;
 }
 
 export default {
   $raf,
   $el,
   $body,
-  $backdrop
+  $backdrop,
+  $style
 }
 

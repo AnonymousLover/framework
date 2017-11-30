@@ -29,14 +29,14 @@
         $dialog.alert({
           title  : noTitle ? '' : 'alert',
           content: '删除消息成功',
-          click  : $log.debug
+          click  : log.debug
         })
       },
       confirm(noTitle) {
         $dialog.confirm({
           title  : noTitle ? '' : 'confirm',
           content: '确认要删除当前消息?',
-          click  : $log.debug
+          click  : log.debug
         })
       },
       loading(text) {
@@ -46,7 +46,7 @@
         $dialog.toast(text)
       },
       actionSheet(btnList) {
-        $dialog.actionSheet(btnList, $log.debug);
+        $dialog.actionSheet(btnList, log.debug);
       },
     }
   }

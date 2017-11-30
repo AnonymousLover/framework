@@ -6,6 +6,8 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
 
+import { Scroll } from '../../framework/_inferno'
+
 /*
  * 组件定义, 通过继承Component实现
  * */
@@ -21,11 +23,15 @@ export default class indexPage extends Component {
       { url: 'carousel', text: '轮播组件' },
     ];
     return (
-      <ul className="item-view">
-        {
-          docList.map(item => <li className="item-list">{item.text}</li>)
-        }
-      </ul>
+      <Scroll>
+        <ul className="item-view">
+          {
+            docList.map(item => <li
+              onTap={() => this.context.router.push(item.url)}
+              className="item-list">{item.text}</li>)
+          }
+        </ul>
+      </Scroll>
     )
   }
 }

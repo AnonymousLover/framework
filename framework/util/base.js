@@ -156,6 +156,11 @@ function easeOut(t, b, c, d, f) {
   return toFixed(c * (t1 * t1 * t1 + 1) + b, f ? 1 : 0);
 }
 
+function timeout(fn, delay) {
+  let timer = setTimeout(fn, isNull(delay) ? 16.6666 : delay);
+  return () => { clearTimeout(timer) }
+}
+
 export default {
   isWin,
   getType,
@@ -189,6 +194,7 @@ export default {
   throttle,
   toFixed,
   easeOut,
+  timeout
 }
 
 

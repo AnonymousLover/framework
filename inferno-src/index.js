@@ -6,6 +6,8 @@ import routes from './config/routes'
 
 const history = createHistory();
 
+import './styles/index.less'
+
 Inferno.render(
   <Router history={history} children={routes}/>,
   document.getElementById('app')

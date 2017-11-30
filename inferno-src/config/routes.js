@@ -26,6 +26,8 @@ import { createRoutes } from 'inferno-router'
  */
 const rootRoute = [
   require('../routers/indexRouter'),
+  require('../routers/iconRouter'),
+  require('../routers/dialogRouter'),
 ]
 
 export default createRoutes(
