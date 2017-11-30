@@ -1,5 +1,5 @@
 <template>
-  <div class="model-container" :class="[ clz ]" @tap="tap">
+  <div class="modal-container" :class="[ clz ]" @tap="tap">
     <slot/>
   </div>
 </template>
@@ -11,7 +11,7 @@
     methods: {
       tap(event) {
         const { classList } = event.target;
-        classList.contains('model-container') && this.display(false);
+        classList.contains('modal-container') && this.display(false);
         event.stopPropagation();
       }
     }
