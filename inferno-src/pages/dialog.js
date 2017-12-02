@@ -6,21 +6,21 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
 
-import { Scroll, $dialog } from '../../framework/_inferno'
+import { Page, $dialog } from '../../framework/_inferno'
 
 import { log } from '../../framework/util'
 
 /*
  * 组件定义, 通过继承Component实现
  * */
-export default class dialogPage extends Component {
+export default class DialogPage extends Component {
 
   alert(noTitle) {
     $dialog.alert({
       title  : noTitle ? '' : 'alert',
       content: '删除消息成功',
       tap    : log.debug
-    })
+    });
   }
 
   confirm(noTitle) {
@@ -56,12 +56,12 @@ export default class dialogPage extends Component {
       { text: 'actionSheet2', tap: this.actionSheet.bind(this, ['回复', '转发', '打印']) },
     ];
     return (
-      <Scroll>
+      <Page>
         {
           btnList.map(item => <button
             className="btn-block" onTap={item.tap}>{item.text}</button>)
         }
-      </Scroll>
+      </Page>
     )
   }
 }

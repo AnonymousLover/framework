@@ -1,6 +1,8 @@
+import { Page } from './components/page'
 import { Scroll } from './components/scroll'
-import { $modal, $pop, $load } from './components/container'
-import $dialog, { Popup, MadePop, ActionSheet, Loading } from './components/dialog'
+import Container, { $modal, $pop, $load } from './components/container'
+import Dialog, { $dialog } from './components/dialog'
+import Progress from './components/progress'
 
 export {
   //
@@ -9,9 +11,9 @@ export {
   $load,
   $dialog,
   //
+  Page,
   Scroll,
-  Popup,
-  MadePop,
-  ActionSheet,
-  Loading
+  Container,
+  Dialog,
+  Progress
 }

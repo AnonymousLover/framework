@@ -11,27 +11,25 @@
 }
 
 .block-container,
-.backdrop-container {
+.backdrop-container,
+.modal-container {
   left: 0;
   top: 0;
   right: 0;
   bottom: 0;
   z-index: 9990;
   background-color: rgba(0, 0, 0, .25);
-  transition: all .3s;
+  transition: all .3s ease-out;
 }
 
-.block-container { background-color: rgba(0, 0, 0, 0); }
+.block-container { background-color: transparent; }
 
 .drop-open { overflow: hidden; }
 
 /*modal*/
 .modal-container {
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
   z-index: 9992;
+  background-color: transparent;
   transform: translate3d(0, 100%, 0) translateZ(0);
   transition: all .5s cubic-bezier(.42, -.05, .29, .91);
   
@@ -74,7 +72,7 @@
       background: #fff;
       color: #49a6ff;
       
-      &:active { opacity: .8 }
+      &:active { background: #e4e8f1 }
       &:first-of-type { border-radius: 4px 4px 0 0; }
       &:last-of-type { border-radius: 0 0 4px 4px; }
       &:first-of-type:last-of-type { border-radius: 4px; }
@@ -100,7 +98,7 @@
   background-color: rgba(0, 0, 0, 0.6);
   text-align: center;
   color: #fff;
-  transition: all .3s;
+  transition: all .3s ease-out;
   text-overflow: ellipsis;
   
   [class*='spinner-'] { fill: #fff; stroke: #fff; }
@@ -139,10 +137,14 @@
  */
 .popup-container {
   z-index: 9993;
-  transition: all .3s ease-out;
+  transition: all .2s ease-out;
   
   &.top { top: 30%; z-index: 9991 }
   &.bottom { top: 70%; z-index: 9991 }
+  
+  &.active .popup {
+    animation: scale-in .3s ease-out;
+  }
   
   .popup {
     border-radius: 8px;
@@ -150,6 +152,7 @@
     font-size: 30px;
     text-align: center;
     background-color: #fff;
+    overflow: hidden;
     
     .popup-head {
       padding: 30px 20px 15px;
@@ -175,6 +178,8 @@
         + .btn {
           border-left: 1PX solid #ccc;
         }
+        
+        &:active { background: #e4e8f1 }
       }
     }
   }
@@ -198,6 +203,11 @@
       color: #999;
     }
   }
+}
+
+@keyframes scale-in {
+  from { transform: scale(1.2); }
+  to { transform: scale(1); }
 }
 
 @keyframes loading-rotate {

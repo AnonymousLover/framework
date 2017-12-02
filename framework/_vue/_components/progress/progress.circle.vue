@@ -18,13 +18,11 @@
 <script type="text/babel">
 
   import progressMixins from '../mixins/progress'
-  import vProgressNumber from './progress.number.vue'
   import { base } from '../../../util'
 
   export default {
-    components: { vProgressNumber },
-    mixins    : [progressMixins],
-    computed  : {
+    mixins  : [progressMixins],
+    computed: {
       trackPath() {
         const radius = parseInt(50 - this.relativeStrokeWidth / 2, 10);
         return `M 50 50 m 0 -${radius} a ${radius} ${radius} 0 1 1 0 ${radius * 2} a ${radius} ${radius} 0 1 1 0 -${radius * 2}`;

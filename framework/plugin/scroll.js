@@ -288,7 +288,7 @@
         distance    = ABS(current) + destination;
         duration    = distance / speed;
       }
-      return { destination: ROUND(destination), duration: duration };
+      return { destination: ROUND(destination), duration: Math.ceil(duration) };
     },
     //--------------API-----------------
     setTranslate    : function (x, y) {

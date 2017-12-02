@@ -10,7 +10,7 @@ export class Scroll extends Component {
 
   static propTypes = {
     horizontal: bool,
-    vertical  : bool
+    vertical  : bool,
   }
 
   static defaultProps = {
@@ -40,3 +40,5 @@ export class Scroll extends Component {
     )
   }
 }
+
+

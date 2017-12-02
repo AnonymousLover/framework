@@ -78,7 +78,13 @@ function toMap(str, obj, val) {
 
 function valueFn(value) { return function () { return value } }
 
-const extend = Object.assign
+const extend = Object.assign || function (dst) {
+  toArr(arguments, 1)
+    .forEach(arg => {
+      each(arg || [], (val, key) => dst[key] = val)
+    })
+  return dst;
+}
 
 function each(obj, iterator, context) {
   isArr(obj) ? toArr(obj).forEach(

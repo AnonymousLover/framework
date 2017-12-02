@@ -28,6 +28,7 @@ const rootRoute = [
   require('../routers/indexRouter'),
   require('../routers/iconRouter'),
   require('../routers/dialogRouter'),
+  require('../routers/progressRouter'),
 ]
 
 export default createRoutes(

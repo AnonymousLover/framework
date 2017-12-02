@@ -1,50 +1,142 @@
 import Inferno from 'inferno'
+import Component from 'inferno-component'
+import PropTypes from 'prop-types'
 import { el, base } from '../../util'
 
-const { toArr, timeout, NO_OP, extend, isFunc } = base;
+import '../../less/dialog.less'
+
+const { toArr, timeout, NO_OP, extend, isFunc, debounce } = base;
 
 const { $el, $body, $backdrop } = el;
 
-const { create, toggle } = $el
-
 const ACTIVE = 'active';
 
+const { bool, func, number } = PropTypes;
+
+class container extends Component {
+
+  static propTypes = {
+    active: bool,
+    cb    : func,
+    delay : number
+  }
+
+  static defaultProps = {
+    active: true,
+    cb    : NO_OP,
+    delay : 0
+  }
+
+  className = ''
+
+  state = { active: false }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ active: nextProps.active })
+  }
+
+  display = debounce((val) => {
+    this.setState({ active: !!val })
+  }, 16.7)
+
+  shouldComponentUpdate(props, nextState) {
+    return nextState.active !== this.state.active;
+  }
+
+  componentDidMount() {
+    const { active } = this.props;
+    this.display(!!active)
+  }
+
+  componentDidUpdate() {
+    const { active } = this.state;
+    $backdrop[active ? 'retain' : 'release']()
+  }
+
+  render() {
+    const { className } = this;
+    const { active }    = this.state;
+    return (
+      <div className={
+        [className].concat(active ? ACTIVE : '').join(' ')
+      }>
+        {this.props.children}
+      </div>
+    )
+  }
+}
+
+class Modal extends container {
+
+  className = 'modal-container'
+
+  close = (event) => {
+    const { cb }        = this.props
+    const { classList } = event.target;
+    classList.contains('modal-container') && cb();
+    event.stopPropagation();
+  }
+
+  render() {
+    const { className } = this;
+    const { active }    = this.state;
+    return (
+      <div className={
+        [className].concat(active ? ACTIVE : '').join(' ')
+      } onTap={this.close}>
+        {this.props.children}
+      </div>
+    )
+  }
+}
+
+class Pop extends container {className = 'popup-container'}
+
+class Load extends container {
+  className = 'loading-container'
+
+  componentDidUpdate() {
+    isFunc(this.vTime) && this.vTime();
+    const { active }    = this.state;
+    const { delay, cb } = this.props;
+    $backdrop[active ? 'retain' : 'release']()
+    this.vTime = active ? timeout(
+      () => {
+        this.display(false), cb();
+      }, delay || 10000) : null
+  }
+}
+
+export default { Modal, Pop, Load }
+
 export const $modal = {
-  _attr   : { className: 'modal-container' },
-  _el     : null,       //容器
-  _stack  : 0,          // 堆栈
-  delay   : 500,        // 关闭延时
-  timer   : null,       // 定时器句柄
+  _el       : null,       //容器
+  _stack    : 0,          // 堆栈
+  delay     : 500,        // 关闭延时
+  _component: null,    // 组件句柄
   show(content, opt) {
     const that = this;
-    that._el || ((el) => {
-      $body.append(that._el = el);
-      that._bindEvent()
-    })(create('div', that._attr))
-    isFunc(this.timer) && this.timer();
+    // 创建容器 ..
+    that._el || $body.append(that._el = $el.create('div'));
     that._stack++ ? that.hide(() => {
       that._append(content, opt)
     }) : that._append(content, opt);
   },
-  // 事件绑定
-  _bindEvent() {
-    const { _el } = this;
-    _el.addEventListener('tap',
-      event => {
-        event.target === _el && this.hide()
-      }, false)
-  },
   /*
    * 私有方法 -- 不允许外部使用
    */
-  _append(content, opt) {
-    const { _el } = this;
-    $backdrop.retain()
-    Inferno.render(content, _el)
-    timeout(toggle.bind(null, _el, ACTIVE, true))
-    this._delayFn(opt || {})
+  _append(content, opt = {}) {
+    const { _el }   = this;
+    this._component = Inferno.render(
+      this.getComponent(content, {
+        active: true,
+        cb    : () => this.hide(opt.cb),
+        delay : opt.delay
+      }), _el)
   },
-  _delayFn: NO_OP,
+  getComponent(content, opts) {
+    return <Modal {...opts}>{content}</Modal>
+  },
   hide(cb, arg2) {
     const noClose = arg2 === true;
     // 关闭
@@ -55,33 +147,22 @@ export const $modal = {
   },
   _hide() {
     this._stack--;
-    toggle(this._el, ACTIVE);
-    $backdrop.release();
+    const { _component } = this;
+    _component && _component.display(false);
   }
 }
 
 export const $pop = extend(
   {}, $modal, {
-    _bindEvent: NO_OP,
-    _attr     : { className: 'popup-container' },
-    delay     : 300
+    delay: 300,
+    getComponent(content, opts) {
+      return <Pop {...opts}>{content}</Pop>
+    },
   })
 
 export const $load = extend(
-  { _timer: null }, $pop, {
-    _bindEvent: NO_OP,
-    _attr     : { className: 'loading-container' },
-    _timer    : null,
-    _delayFn(opt) {
-      isFunc(this._timer) && this._timer()
-      const delay = opt.delay || 10000;
-      const cb    = isFunc(opt) ? opt : opt.cb;
-      this._timer = timeout(this.hide.bind(this, cb), delay);
-    },
-    _hide() {
-      isFunc(this._timer) && this._timer()
-      this._stack--, this._timer = null;
-      toggle(this._el, ACTIVE);
-      $backdrop.release();
+  {}, $pop, {
+    getComponent(content, opts) {
+      return <Load {...opts}>{content}</Load>
     }
   })

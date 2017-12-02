@@ -11,7 +11,7 @@ import { Scroll } from '../../framework/_inferno'
 /*
  * 组件定义, 通过继承Component实现
  * */
-export default class indexPage extends Component {
+export default class IndexPage extends Component {
 
   render() {
     let docList = [
@@ -21,6 +21,7 @@ export default class indexPage extends Component {
       { url: 'form', text: 'form表单' },
       { url: 'password', text: '密码组件' },
       { url: 'carousel', text: '轮播组件' },
+      { url: 'progress', text: '进度条' },
     ];
     return (
       <Scroll>

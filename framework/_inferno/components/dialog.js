@@ -1,8 +1,6 @@
 import Inferno from 'inferno';
 import PropTypes from 'prop-types'
 
-import '../../less/dialog.less'
-
 import { base } from '../../util'
 import { $modal, $load, $pop } from './container'
 
@@ -10,7 +8,7 @@ const { array, string, func, bool } = PropTypes;
 
 const { NO_OP, valueFn } = base;
 
-export const Popup = (props) => {
+const Popup = (props) => {
   const { title, btnList = [], children, tap } = props;
   return (
     <div className="popup">
@@ -42,7 +40,7 @@ export const Popup = (props) => {
 Popup.propTypes    = { title: string, btnList: array, tap: func }
 Popup.defaultProps = { tap: NO_OP }
 
-export const MadePop = (props) => {
+const MadePop = (props) => {
   const { title, children, className } = props;
   return (
     <div className={['made-body'].concat(className).join(' ')}>
@@ -57,7 +55,7 @@ export const MadePop = (props) => {
 
 MadePop.propTypes = { className: string, title: string }
 
-export const ActionSheet = (props) => {
+const ActionSheet = (props) => {
   const { btnList = [], tap = base.NO_OP } = props;
   return (
     <div className="action-sheet">
@@ -87,7 +85,7 @@ export const ActionSheet = (props) => {
 ActionSheet.propTypes    = { btnList: array, tap: func }
 ActionSheet.defaultProps = { tap: NO_OP }
 
-export const Loading = (props) => {
+const Loading = (props) => {
   const { toast, children } = props;
   return (
     <div className="spinner">
@@ -106,19 +104,21 @@ export const Loading = (props) => {
 Loading.propTypes    = { toast: bool }
 Loading.defaultProps = { toast: false }
 
-export default {
+export default { ActionSheet, Popup, MadePop, Loading }
+
+export const $dialog = {
   actionSheet(btnList, cb) {
     $modal.show(
       <ActionSheet
         btnList={btnList}
         tap={$modal.hide.bind($modal, cb)}/>
-    )
+      , { cb: NO_OP })
   },
   _pop(_opts) {
     const { title, content, btnList, tap } = _opts;
     $pop.show(
       <Popup
-        title={title}
+        title={title || ''}
         btnList={btnList}
         tap={$pop.hide.bind($pop, tap)}>
         {content}
