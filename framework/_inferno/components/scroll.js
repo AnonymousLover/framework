@@ -34,7 +34,7 @@ export class Scroll extends Component {
     return (
       <div className="scroll-wrapper">
         <div className="scroll-body">
-          {children}
+          { children }
         </div>
       </div>
     )

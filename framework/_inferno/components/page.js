@@ -22,8 +22,8 @@ export class Page extends Component {
     const { children, content, native } = this.props;
     return (
       <div className="page-wrapper">
-        {!native ? <Scroll>{children}</Scroll> : children}
-        {content}
+        { !native ? <Scroll>{ children }</Scroll> : children }
+        { content }
       </div>
     )
   }

@@ -49,6 +49,7 @@ class container extends Component {
   }
 
   componentDidUpdate() {
+    const { cb }     = this.props
     const { active } = this.state;
     $backdrop[active ? 'retain' : 'release']()
   }
@@ -60,7 +61,7 @@ class container extends Component {
       <div className={
         [className].concat(active ? ACTIVE : '').join(' ')
       }>
-        {this.props.children}
+        { this.props.children }
       </div>
     )
   }
@@ -83,8 +84,8 @@ class Modal extends container {
     return (
       <div className={
         [className].concat(active ? ACTIVE : '').join(' ')
-      } onTap={this.close}>
-        {this.props.children}
+      } onTap={ this.close }>
+        { this.props.children }
       </div>
     )
   }
@@ -135,7 +136,7 @@ export const $modal = {
       }), _el)
   },
   getComponent(content, opts) {
-    return <Modal {...opts}>{content}</Modal>
+    return <Modal { ...opts }>{ content }</Modal>
   },
   hide(cb, arg2) {
     const noClose = arg2 === true;
@@ -156,13 +157,13 @@ export const $pop = extend(
   {}, $modal, {
     delay: 300,
     getComponent(content, opts) {
-      return <Pop {...opts}>{content}</Pop>
+      return <Pop { ...opts }>{ content }</Pop>
     },
   })
 
 export const $load = extend(
   {}, $pop, {
     getComponent(content, opts) {
-      return <Load {...opts}>{content}</Load>
+      return <Load { ...opts }>{ content }</Load>
     }
   })

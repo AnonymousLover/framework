@@ -15,19 +15,19 @@ const Popup = (props) => {
       {
         title ? (
           <div className="popup-head">
-            <h3 className="popup-title">{title}</h3>
+            <h3 className="popup-title">{ title }</h3>
           </div>
         ) : ''
       }
-      <div className="popup-body">{children}</div>
+      <div className="popup-body">{ children }</div>
       <div className="flex-box popup-btn-wrapper">
         {
           btnList.map((item, idx) => {
             let clazz = 'flex btn ' + (item.type || 'btn-default');
             return (
-              <span className={clazz}
-                    onTap={tap.bind(this, idx)}>
-                {item.text}
+              <span className={ clazz }
+                    onTap={ tap.bind(this, idx) }>
+                { item.text }
               </span>
             )
           })
@@ -43,12 +43,12 @@ Popup.defaultProps = { tap: NO_OP }
 const MadePop = (props) => {
   const { title, children, className } = props;
   return (
-    <div className={['made-body'].concat(className).join(' ')}>
+    <div className={ ['made-body'].concat(className).join(' ') }>
       <h3 className="made-title">
-        {title}
+        { title }
         <em className="icon-font">&#xe646;</em>
       </h3>
-      {children}
+      { children }
     </div>
   )
 }
@@ -65,8 +65,8 @@ const ActionSheet = (props) => {
             let text = item.text == null ? item : item.text;
             return (
               <li className="item-list"
-                  onTap={tap.bind(this, index)}>
-                {text}
+                  onTap={ tap.bind(this, index) }>
+                { text }
               </li>
             )
           })
@@ -74,7 +74,7 @@ const ActionSheet = (props) => {
       </ul>
       <ul className="item-view">
         <li className="item-list cancel"
-            onTap={tap.bind(this, false)}>
+            onTap={ tap.bind(this, false) }>
           取消
         </li>
       </ul>
@@ -96,7 +96,7 @@ const Loading = (props) => {
           </svg>
         ) : ''
       }
-      <p>{children}</p>
+      <p>{ children }</p>
     </div>
   )
 }
@@ -110,18 +110,18 @@ export const $dialog = {
   actionSheet(btnList, cb) {
     $modal.show(
       <ActionSheet
-        btnList={btnList}
-        tap={$modal.hide.bind($modal, cb)}/>
+        btnList={ btnList }
+        tap={ $modal.hide.bind($modal, cb) }/>
       , { cb: NO_OP })
   },
   _pop(_opts) {
     const { title, content, btnList, tap } = _opts;
     $pop.show(
       <Popup
-        title={title || ''}
-        btnList={btnList}
-        tap={$pop.hide.bind($pop, tap)}>
-        {content}
+        title={ title || '' }
+        btnList={ btnList }
+        tap={ $pop.hide.bind($pop, tap) }>
+        { content }
       </Popup>
     )
   },
@@ -153,7 +153,7 @@ export const $dialog = {
   _load(_opts) {
     const { text, toast, delay, cb } = _opts;
     $load.show(
-      <Loading toast={toast}>{text}</Loading>,
+      <Loading toast={ toast }>{ text }</Loading>,
       { delay, cb }
     )
   },

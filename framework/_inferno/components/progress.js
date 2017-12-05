@@ -22,7 +22,7 @@ class baseComponent extends Component {
     value: 0,
     color: '#20A0FF',
     total: 100,
-    cb   : base.NO_OP
+    cb   : NO_OP
   }
 
   constructor(props) {
