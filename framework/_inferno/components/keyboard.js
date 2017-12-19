@@ -2,7 +2,7 @@
  * 虚拟键盘组件
  */
 
-import Inferno, { linkEvent } from 'inferno'
+import Inferno from 'inferno'
 import Component from 'inferno-component'
 import PropTypes from 'prop-types'
 

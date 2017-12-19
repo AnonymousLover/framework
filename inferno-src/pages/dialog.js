@@ -32,7 +32,7 @@ export default class DialogPage extends Component {
   }
 
   actionSheet(btnList) {
-    $dialog.actionSheet(btnList, log.debug);
+    $dialog.actionSheet(btnList, val => log.debug(val));
   }
 
   loading(text) {
@@ -59,7 +59,7 @@ export default class DialogPage extends Component {
       <Page>
         {
           btnList.map(item => <button
-            className="btn-block" onTap={item.tap}>{item.text}</button>)
+            className="btn-block" onTap={ item.tap }>{ item.text }</button>)
         }
       </Page>
     )

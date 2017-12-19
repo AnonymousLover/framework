@@ -30,6 +30,8 @@ const rootRoute = [
   require('../routers/dialogRouter'),
   require('../routers/progressRouter'),
   require('../routers/keyboardRouter'),
+  require('../routers/carouselRouter'),
+  require('../routers/stepRouter'),
 ]
 
 export default createRoutes(

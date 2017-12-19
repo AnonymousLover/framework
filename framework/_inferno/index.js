@@ -5,6 +5,8 @@ import Dialog, { $dialog } from './components/dialog'
 import Keyboard, { $keyboard } from './components/keyboard'
 import Form from './components/form'
 import Progress from './components/progress'
+import { Carousel } from './components/carousel'
+import { Steps } from './components/step'
 
 export {
   //
@@ -14,11 +16,13 @@ export {
   $dialog,
   $keyboard,
   //
+  Carousel,
   Page,
   Scroll,
   Container,
   Dialog,
   Keyboard,
   Form,
-  Progress
+  Progress,
+  Steps
 }

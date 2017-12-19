@@ -11,7 +11,7 @@ export default {
     return {
       itemList: [],   //带自动轮播
       active  : 0,    // 当前活跃的active
-      vStatus : 0    //当前状态。。0代表锁定状态。1代表滑动状态。2代表自由状态
+      vStatus : 0     //当前状态。。0代表锁定状态。1代表滑动状态。2代表自由状态
     }
   },
   beforeDestroy() { clearTimeout(this._timeout) },

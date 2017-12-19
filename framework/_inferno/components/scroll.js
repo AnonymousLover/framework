@@ -4,7 +4,11 @@ import PropTypes from 'prop-types'
 
 import '../../less/scroll.less'
 
+import { base, el } from '../../util'
+
 const { bool } = PropTypes;
+
+const { timeout } = base
 
 export class Scroll extends Component {
 
@@ -13,26 +17,33 @@ export class Scroll extends Component {
     vertical  : bool,
   }
 
-  static defaultProps = {
-    horizontal: false,
-    vertical  : true
-  }
+  static defaultProps = { vertical: true }
+
+  scroll = null
 
   componentDidMount() {
     const { horizontal, vertical } = this.props;
 
-    const _scroll = new IScroll(
+    this.scroll = new IScroll(
       this._vNode.dom, {
         scrollX: horizontal,
-        scrollY: vertical
+        scrollY: vertical,
+        isVNode: true
       });
-    _scroll.toggleEvent('scroll', this.scroll)
   }
+
+  vEvent = e => { this.scroll && this.scroll._execEvent('vNodeEvent', e) }
 
   render() {
     const { children } = this.props;
     return (
-      <div className="scroll-wrapper">
+      <div className="scroll-wrapper"
+           onDragEnd={ this.vEvent }
+           onDrag={ this.vEvent }
+           onTouchEnd={ this.vEvent }
+           onTouchCancel={ this.vEvent }
+           onTouchStart={ this.vEvent }
+           onTouchMove={ this.vEvent }>
         <div className="scroll-body">
           { children }
         </div>

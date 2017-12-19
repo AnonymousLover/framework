@@ -33,14 +33,16 @@ export default class ProgressPage extends Component {
   }
 
   render() {
-    const { number, line, circle } = this.state;
+    const { line, circle } = this.state;
     return (
       <Page>
-        <Number value={circle}/>
-        <Line value={line} reduce/>
-        <Circle value={circle}>
-          <Number value={circle}/>
+        <Circle value={ circle } reduce>
+          <Number value={ circle } reduce/>
         </Circle>
+        <Circle value={ circle }>
+          <Number value={ circle }/>
+        </Circle>
+        <Line value={ line } reduce/>
       </Page>
     )
   }

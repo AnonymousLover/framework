@@ -53,7 +53,8 @@ const MadePop = (props) => {
   )
 }
 
-MadePop.propTypes = { className: string, title: string }
+MadePop.propTypes    = { className: string, title: string, tap: func }
+MadePop.defaultProps = { tap: NO_OP }
 
 const ActionSheet = (props) => {
   const { btnList = [], tap = base.NO_OP } = props;
@@ -112,7 +113,7 @@ export const $dialog = {
       <ActionSheet
         btnList={ btnList }
         tap={ $modal.hide.bind($modal, cb) }/>
-      , { cb: NO_OP })
+      , { cb: cb })
   },
   _pop(_opts) {
     const { title, content, btnList, tap } = _opts;

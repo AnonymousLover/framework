@@ -1,9 +1,11 @@
 //require mui-gesture
 (function (window, Math, Class, Undefined) {
-  var EVENT_START  = 'touchstart',
-      EVENT_MOVE   = 'touchmove',
-      EVENT_END    = 'touchend',
-      EVENT_CANCEL = 'touchcancel';
+  var TOUCH = true//'Touch' in window && navigator.maxTouchPoints > 1
+
+  var EVENT_START  = TOUCH ? 'touchstart' : 'mousedown',
+      EVENT_MOVE   = TOUCH ? 'touchmove' : 'mousemove',
+      EVENT_END    = TOUCH ? 'touchend' : 'mouseup',
+      EVENT_CANCEL = TOUCH ? 'touchcancel' : 'mouseup';
 
   var _setTimeout   = setTimeout,
       _clearTimeout = clearTimeout,
@@ -46,7 +48,8 @@
         scrollTime   : 500,     //滚动时间
         scrollEasing : outCubic,//轮播动画曲线
         resizePolling: 0,
-        deceleration : Undefined
+        deceleration : Undefined,
+        isVNode      : false    // 是否是虚拟框架
       }, options);
       self.x = self.y = 0, self._initEvent();
       if (scroller) {
@@ -57,21 +60,27 @@
     _initEvent      : function (detach) {
       var self    = this,
           action  = detach ? 'removeEventListener' : 'addEventListener',
-          wrapper = self.wrapper;
+          wrapper = self.wrapper,
+          isVNode = self.options.isVNode;
       // 缩放重置
       window[action]('orientationchange', self);
       window[action]('resize', self);
       // css3 动画结束
       self.scroller[action]('webkitTransitionEnd', self);
-      wrapper[action](EVENT_START, self);
-      wrapper[action](EVENT_MOVE, self);
-      wrapper[action](EVENT_CANCEL, self);
-      wrapper[action](EVENT_END, self);
-      wrapper[action]('drag', self);
-      wrapper[action]('dragend', self);
+      if (isVNode) {  // 是否是vNode框架使用
+        self.toggleEvent('vNodeEvent', self.vNodeEvent, detach)
+      } else {
+        wrapper[action](EVENT_START, self);
+        wrapper[action](EVENT_MOVE, self);
+        wrapper[action](EVENT_CANCEL, self);
+        wrapper[action](EVENT_END, self);
+        wrapper[action]('drag', self);
+        wrapper[action]('dragend', self);
+      }
       //滚动结束
-      self.toggleEvent('scrollEnd', self._scrollEnd);
+      self.toggleEvent('scrollEnd', self._scrollEnd, detach);
     },
+    vNodeEvent      : function (self, e) { self.handleEvent(e) },
     handleEvent     : function (e) {
       if (this.hold) return;
       var self = this;
@@ -104,11 +113,11 @@
         index > -1 && _evList.splice(index, 1)
       } else _evList.push(fn);
     },
-    _execEvent      : function (type) {
+    _execEvent      : function (type, event) {
       var self    = this,
           _evList = self._events[type] || [];
       _evList.forEach(function (_ev) {
-        typeof _ev === 'function' && _ev.apply(_ev, self);
+        typeof _ev === 'function' && _ev.call(_ev, self, event);
       });
     },
     _start          : function (e) {
@@ -276,7 +285,7 @@
     _momentum       : function (current, distance, time, lowerMargin, wrapperSize, deceleration) {
       var speed    = _parseFloat(ABS(distance) / time),
           destination, duration;
-      deceleration = deceleration == Undefined ? 0.0025 : deceleration;
+      deceleration = deceleration === Undefined ? 0.0025 : deceleration;
       destination  = current + speed * speed / deceleration * (distance < 0 ? -1 : 1);
       duration     = speed / deceleration;
       if (destination < lowerMargin) {

@@ -3,7 +3,7 @@
  */
 import Inferno from 'inferno';
 
-import { Scroll } from '../../framework/_inferno'
+import { Page } from '../../framework/_inferno'
 
 const icons = [
   { keyCode: '64e', name: '', className: 'icon-loading' },
@@ -101,7 +101,7 @@ const icons = [
 
 export default () => {
   return (
-    <Scroll>
+    <Page>
       <ul className="row font-page">
         {
           icons.map(item => {
@@ -109,14 +109,14 @@ export default () => {
                 describe  = '&#xe' + item.keyCode;
             return (
               <li className="col-4">
-                <i className={className.join(' ')}/>
-                <p>{item.className}</p>
-                编码:{describe}
+                <i className={ className.join(' ') }/>
+                <p>{ item.className }</p>
+                编码:{ describe }
               </li>
             )
           })
         }
       </ul>
-    </Scroll>
+    </Page>
   )
 }

@@ -47,7 +47,8 @@ class baseComponent extends Component {
   step = NO_OP
 
   time = (distance) => {
-    const time = Math.round(Math.abs(distance) / 0.05)
+    distance   = Math.abs(distance)
+    const time = Math.round(Math.sqrt(distance) * 150)
     return time > 2000 ? 2000 : time
   }
 
@@ -69,12 +70,12 @@ class Number extends baseComponent {
     let t      = 1;
     const d    = Math.ceil(time / 1000 * 60);
     const step = () => {
-      const toVal = t >= d ? oldValue
+      const toVal   = t >= d ? oldValue
         : base.easeOut(t++, oldValue - distance, distance, d);
-      this.raf    = toVal === oldValue ? null
-        : el.$raf(step)
+      const canStop = distance > 0 ? toVal >= oldValue : toVal <= oldValue
+      this.raf      = canStop ? null : el.$raf(step)
 
-      _vNode.dom.innerHTML = toVal
+      _vNode.dom.innerHTML = canStop ? oldValue : toVal
     }
     step();
   }
@@ -101,7 +102,7 @@ class Line extends baseComponent {
     }
     return (
       <div className="progress-line">
-        <div className="line-inner" style={style}/>
+        <div className="line-inner" style={ style }/>
       </div>
     )
   }
@@ -136,19 +137,19 @@ class Circle extends baseComponent {
     return (
       <div className="progress-circle">
         <svg viewBox="0 0 100 100">
-          <path d={trackPath}
+          <path d={ trackPath }
                 stroke="#e5e9f2"
-                strokeWidth={relativeStrokeWidth}
+                strokeWidth={ relativeStrokeWidth }
                 fill="none"/>
-          <path d={trackPath}
+          <path d={ trackPath }
                 strokeLinecap="round"
-                stroke={color}
-                strokeWidth={relativeStrokeWidth}
+                stroke={ color }
+                strokeWidth={ relativeStrokeWidth }
                 fill="none"
-                style={circlePathStyle}/>
+                style={ circlePathStyle }/>
         </svg>
         <span className="circle-text">
-          {children}
+          { children }
         </span>
       </div>
     )

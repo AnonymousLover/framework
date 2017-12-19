@@ -90,11 +90,28 @@ function $style(el, property) {
     || styles[property] : styles;
 }
 
+function parseTranslateMatrix(translateString, position) {
+  var matrix = translateString.match(/matrix(3d)?\((.+?)\)/),
+      is3D   = matrix && matrix[1],
+      result = {};
+  if (matrix) {
+    matrix = matrix[2].split(",");
+    matrix = is3D === "3d" ? matrix.slice(12, 15) :
+      matrix.concat(0).slice(4, 7);
+  } else matrix = [0, 0, 0];
+  result.x = parseFloat(matrix[0]);
+  result.y = parseFloat(matrix[1]);
+  result.z = parseFloat(matrix[2]);
+  return position && result.hasOwnProperty(position) ?
+    result[position] : result;
+}
+
 export default {
   $raf,
   $el,
   $body,
   $backdrop,
-  $style
+  $style,
+  parseTranslateMatrix
 }
 

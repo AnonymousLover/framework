@@ -202,8 +202,3 @@ export default {
   easeOut,
   timeout
 }
-
-
-
-
-
