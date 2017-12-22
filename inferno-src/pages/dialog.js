@@ -56,7 +56,7 @@ export default class DialogPage extends Component {
       { text: 'actionSheet2', tap: this.actionSheet.bind(this, ['回复', '转发', '打印']) },
     ];
     return (
-      <Page>
+      <Page native>
         {
           btnList.map(item => <button
             className="btn-block" onTap={ item.tap }>{ item.text }</button>)

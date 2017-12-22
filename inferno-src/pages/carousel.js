@@ -16,7 +16,7 @@ export default class CarouselPage extends Component {
   render() {
 
     return (
-      <Page>
+      <Page native>
         <Carousel>
           {
             orders.map(order => (

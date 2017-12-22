@@ -79,7 +79,7 @@ export default class Form extends Component {
       invalid = vMap[name]
     }
     if (that.vInvalid === invalid) return;
-    // init || that.structure();
+    init || that.structure();
     that.btnNode.disabled = !invalid;
   }, 16.7)
 
@@ -131,7 +131,10 @@ class Input extends Component {
 
   output = (event) => {
     const { type, target: { value } } = event;
-    this.setState({ focus: type !== 'blur', empty: !value, value })
+
+    const input = type !== 'input';
+    input ? this.setState({ focus: type !== 'blur', empty: !value, value })
+      : this.validate(value)
   }
 
   setValue = (value) => { this.$input.value = value }
@@ -149,9 +152,11 @@ class Input extends Component {
     this.setState({ value })
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   this.setState({ value: nextProps.value })
-  // }
+  componentWillReceiveProps(nextProps) {
+    const { value: value1 } = this.props;
+    const { value }         = nextProps;
+    if (value !== value1) this.setState({ value })
+  }
 
   componentDidUpdate() {
     const { value } = this.state

@@ -8,15 +8,7 @@ const { bool, node } = PropTypes;
 
 export class Page extends Component {
 
-  static propTypes = {
-    native : bool,
-    content: node
-  }
-
-  static defaultProps = {
-    type   : 'scroll',
-    content: null
-  }
+  static propTypes = { native: bool, content: node }
 
   render() {
     const { children, content, native } = this.props;

@@ -1,9 +1,10 @@
-const webpack              = require('webpack');
+const webpack = require('webpack');
 // const PreloadWebpackPlugin = require('preload-webpack-plugin');
 
 //postcss
 const px2rem       = require('postcss-pxtorem');
 const autofixer    = require('autoprefixer')
+const cssnext      = require('postcss-cssnext')
 //webpack的基础配置
 const globalConfig = require('./metadata.webpack.config');
 
@@ -12,6 +13,7 @@ module.exports.postcss = {
   options: {
     plugins: () => [
       autofixer(),
+      // cssnext({}),
       px2rem({
         rootValue        : 100,
         propList         : ['*'],

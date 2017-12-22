@@ -2,7 +2,7 @@ import Inferno from 'inferno'
 import { Router } from 'inferno-router'
 import createHistory from 'history/createHashHistory'
 
-import routes from './config/routes'
+import routes from './config/router-all'
 
 const history = createHistory();
 

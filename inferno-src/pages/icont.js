@@ -101,7 +101,7 @@ const icons = [
 
 export default () => {
   return (
-    <Page>
+    <Page native>
       <ul className="row font-page">
         {
           icons.map(item => {

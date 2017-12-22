@@ -28,7 +28,7 @@ class Base extends Component {
 
   componentDidMount() {
     const { children }        = this._vNode.dom
-    const [_body, _indicator] = [].slice.call(children)
+    const [_body, _indicator] = [...children]
 
     this.$els = { _body, _indicator }
     this.initialize();
@@ -100,7 +100,7 @@ class Base extends Component {
         $deltaX   = Math.abs(deltaX),
         speed     = $deltaX / detail.deltaTime;
     const index   = ['left', 'right'].indexOf(direction); // -1 0 1
-    deltaX        = index !== -1 ? (speed > .8 && $deltaX * 4 > itemWidth) || $deltaX * 2 > itemWidth ?
+    deltaX        = index !== -1 ? (speed > .8 && $deltaX * 5 > itemWidth) || $deltaX * 2 > itemWidth ?
       index ? deltaX > 0 ? itemWidth : 0 : deltaX < 0 ? -itemWidth : 0 : 0 : 0
     this.status(0)
     that.scrollTo(attr.scrollX + deltaX, 300);
